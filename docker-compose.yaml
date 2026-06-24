@@ -4,7 +4,25 @@ services:
     image: mcr.microsoft.com/mssql/server:2019-latest
     container_name: sql-server-container
     environment:
-      SA_PASSWORD: password123
+      SA_PASSWORD: ${SA_PASSWORD}
       ACCEPT_EULA: Y
     ports:
       - "1433:1433"
+
+  mediacontroller:
+    image: mediacontroller
+    container_name: mediacontroller
+    depends_on:
+      - sql-server
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+
+      # appsettings.json => ConnectionStrings:DefaultConnection
+      ConnectionStrings__DefaultConnection: >
+        Server=sql-server,1433;
+        Database=MediaArchive;
+        User Id=sa;
+        Password=${SA_PASSWORD};
+        TrustServerCertificate=True;
+    ports:
+      - "8080:8080"
