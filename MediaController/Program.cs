@@ -1,0 +1,57 @@
+
+using Common.Database;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+
+namespace MediaController
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
+
+            // Add services to the container.
+            //builder.Services.AddDbContextFactory<ApplicationDbContext>(options =>
+            //{
+            //    options.UseSqlServer("");
+            //});
+
+            builder.Services.AddControllers();
+
+            // Swagger
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Meine API",
+                    Version = "v1",
+                    Description = "Beispiel API mit Swagger"
+                });
+            });
+
+
+            var app = builder.Build();
+
+            // Swagger Middleware
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Meine API v1");
+                // Optional: Swagger direkt auf der Startseite
+                // options.RoutePrefix = string.Empty;
+            });
+
+            // Configure the HTTP request pipeline.
+
+            app.UseAuthorization();
+
+            app.MapControllers();
+
+            app.Run();
+        }
+    }
+}
+
+

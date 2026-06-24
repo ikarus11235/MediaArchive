@@ -1,0 +1,9 @@
+services:
+  mediacontroller:
+    image: mediacontroller
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        DOTNET_VERSION: "8.0"
+        PROJECT_PATH: "MediaController/MediaController.csproj"

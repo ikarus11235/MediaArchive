@@ -1,0 +1,9 @@
+.vs/
+obj/
+bin/
+.vscode/
+
+#Common\obj\
+#Common\bin\
+*.user
+.env
