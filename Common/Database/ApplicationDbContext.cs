@@ -36,6 +36,18 @@ namespace Common.Database
                 .IsRequired();
 
             modelBuilder.Entity<Tag>().HasKey(q => q.Id);
+
+            // Episode <-> Tag
+            modelBuilder.Entity<Episode>()
+                .HasMany(e => e.Tags)
+                .WithMany(t => t.Episodes)
+                .UsingEntity(j => j.ToTable("EpisodeTags"));
+
+            // Picture <-> Tag
+            modelBuilder.Entity<Picture>()
+                .HasMany(p => p.Tags)
+                .WithMany(t => t.Pictures)
+                .UsingEntity(j => j.ToTable("PictureTags"));
         }
     }
 }

@@ -9,5 +9,7 @@
         public Episode Episode { get; set; }
 
         public string ImagePath { get; set; }
+
+        public ICollection<Tag> Tags { get; set; } = new List<Tag>();
     }
 }

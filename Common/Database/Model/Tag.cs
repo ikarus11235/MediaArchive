@@ -9,5 +9,8 @@
         public int PictureId { get; set; }
 
         public string Title { get; set; }
+
+        public ICollection<Episode> Episodes { get; set; } = new List<Episode>();
+        public ICollection<Picture> Pictures { get; set; } = new List<Picture>();
     }
 }

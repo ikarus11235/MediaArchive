@@ -17,5 +17,6 @@
         public string EpisodeSign { get; set; }
 
         public ICollection<Picture> Pictures { get; } = new List<Picture>();
+        public ICollection<Tag> Tags { get; set; } = new List<Tag>();
     }
 }
