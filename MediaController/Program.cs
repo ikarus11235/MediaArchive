@@ -12,10 +12,10 @@ namespace MediaController
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            //builder.Services.AddDbContextFactory<ApplicationDbContext>(options =>
-            //{
-            //    options.UseSqlServer("");
-            //});
+            builder.Services.AddDbContextFactory<ApplicationDbContext>(options =>
+            {
+                options.UseSqlServer("Server=localhost,1433;Database=MediaArchive;User Id=sa;Password=Password123!;TrustServerCertificate=True;");
+            });
 
             builder.Services.AddControllers();
 

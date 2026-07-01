@@ -1,11 +1,17 @@
 ﻿using Common.Database.Model;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using System.Reflection.Metadata;
 
 namespace Common.Database
 {
     public class ApplicationDbContext : DbContext
     {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        : base(options)
+        {
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //optionsBuilder.UseSqlServer("_connectionString");
@@ -48,6 +54,17 @@ namespace Common.Database
                 .HasMany(p => p.Tags)
                 .WithMany(t => t.Pictures)
                 .UsingEntity(j => j.ToTable("PictureTags"));
+        }
+    }
+
+    public class DesignContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
+    {
+        public ApplicationDbContext CreateDbContext(string[] args)
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+            optionsBuilder.UseSqlServer("Server=localhost,1433;Database=MediaArchive;User Id=sa;Password=Password123!;TrustServerCertificate=True;");
+
+            return new ApplicationDbContext(optionsBuilder.Options);
         }
     }
 }

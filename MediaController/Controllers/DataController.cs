@@ -9,11 +9,11 @@ namespace MediaController.Controllers
     [Route("api")]
     public class DataController : ControllerBase
     {
-        private readonly IDbContextFactory<ApplicationDbContext> dbContextFactory;
+        private readonly IDbContextFactory<ApplicationDbContext> _dbContextFactory;
 
         public DataController(IDbContextFactory<ApplicationDbContext> dbContextFactory)
         {
-            this.dbContextFactory = dbContextFactory;
+            this._dbContextFactory = dbContextFactory;
         }
 
         [HttpGet("headers")]
