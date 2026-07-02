@@ -20,6 +20,14 @@ export class ShowSeasonsComponent {
     })
   }
 
+  greet(id: number): void {
+    console.log(id);
+  }
+
+  getFakeTitle(): string {
+    return 'The Title ...';
+  }
+
   getFakeSeason(): Season[]{
     return this.mediaService.getTestSeason();
   }

@@ -12,7 +12,9 @@ export class EpisodeTileComponent {
   @Input() title: string  = '';
 
 
-
+  greet(): void {
+    console.log('Greet...');
+  }
 
   
 }

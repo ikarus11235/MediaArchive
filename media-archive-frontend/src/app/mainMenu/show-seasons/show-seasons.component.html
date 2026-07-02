@@ -1,5 +1,5 @@
 <p (click)="getHeaderId()">show-seasons works!</p>
-<h1>Title of Show 1</h1>
+<h1>Title of Show 1: {{getFakeTitle()}}</h1>
 
 
 <div class="dropdown">
@@ -7,7 +7,7 @@
 
   <div class="dropdown-content">
     <a *ngFor="let season of getFakeSeason()">
-      {{ season.headerId }} {{ season.title }}
+      <span (click)="greet(season.id)">{{ season.headerId }} {{ season.title }}</span>
     </a>
   </div>
 </div>

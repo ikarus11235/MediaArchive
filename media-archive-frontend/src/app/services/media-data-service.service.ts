@@ -71,7 +71,7 @@ export class MediaDataServiceService {
       id: 1,
       seasonId: 2,
       description: '',
-      episodeSign: '',
+      episodeSign: 'S2E1',
       title: 'Title 01',
       videoPath: ''
     },
@@ -79,7 +79,7 @@ export class MediaDataServiceService {
       id: 2,
       seasonId: 2,
       description: '',
-      episodeSign: '',
+      episodeSign: 'S2E2',
       title: 'Title 02',
       videoPath: ''
     },
@@ -87,7 +87,7 @@ export class MediaDataServiceService {
       id: 3,
       seasonId: 2,
       description: '',
-      episodeSign: '',
+      episodeSign: 'S2E3',
       title: 'Title 03',
       videoPath: ''
     }

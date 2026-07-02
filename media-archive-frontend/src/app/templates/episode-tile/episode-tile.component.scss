@@ -1,0 +1,15 @@
+.verticalPace{
+    display: flex;
+    flex-direction: row;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-color: lightgrey;
+}
+
+.verticalPace h3{
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.verticalPace h2{
+    width: 300px;
+}
