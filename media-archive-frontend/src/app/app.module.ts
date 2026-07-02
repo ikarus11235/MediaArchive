@@ -7,12 +7,16 @@ import { ShowHeadersComponent } from './mainMenu/show-headers/show-headers.compo
 import { RouterOutlet } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { HeaderTileComponent } from './templates/header-tile/header-tile.component';
+import { ShowSeasonsComponent } from './mainMenu/show-seasons/show-seasons.component';
+import { EpisodeTileComponent } from './templates/episode-tile/episode-tile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ShowHeadersComponent,
-    HeaderTileComponent
+    HeaderTileComponent,
+    ShowSeasonsComponent,
+    EpisodeTileComponent
   ],
   imports: [
     BrowserModule,

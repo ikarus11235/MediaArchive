@@ -9,20 +9,14 @@ import { Header } from '../../interface/header';
   styleUrl: './show-headers.component.scss'
 })
 export class ShowHeadersComponent {
-  testVariable : number = 3;
 
   constructor(private mediaService: MediaDataServiceService){
 
   }
 
-  greet(): number {
-    console.log('Test message...');    
-    return 0;
-  }
-
   testData(): Header[] {
-    let dataset = this.mediaService.getTestData();
-    console.log(dataset);
+    let dataset = this.mediaService.getTestHeader();
+    //console.log(dataset);
     return dataset;
   }
 

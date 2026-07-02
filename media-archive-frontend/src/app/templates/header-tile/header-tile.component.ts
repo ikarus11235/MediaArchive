@@ -20,7 +20,7 @@ export class HeaderTileComponent {
     console.log('Tile clicked: ' + id)
   }
 
-  // navigateToSeasons(id: number){
-  //   this.router.navigate(['/season'], id);
-  // }
+  navigateToSeasons(id: number){
+    this.router.navigate(['/season', id]);
+  }
 }
