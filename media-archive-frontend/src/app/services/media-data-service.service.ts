@@ -99,6 +99,30 @@ export class MediaDataServiceService {
     return this.testHeader;
    }
 
+   getApiHeader(): Observable<Header[]> {
+    return this.http.get<Header[]>('http://localhost:5203/api/headers');
+   }
+
+   getApiSeason(headerId: number): Observable<Season[]> {
+    return this.http.get<Season[]>('http://localhost:5203/api/seasons/' + headerId);
+   }
+
+   getApiEpisodes(seasonId: number): Observable<Episode[]> {
+    return this.http.get<Episode[]>('http://localhost:5203/api/episodes/' + seasonId);
+   }
+
+   getFakeApiHeader(): Observable<Header> {
+    return this.http.get<Header>('http://localhost:5203/api/fakeHeaders');
+   }
+
+   getFakeApiSeason(headerId: number): Observable<Season> {
+    return this.http.get<Season>('http://localhost:5203/api/fakeSeasons/' + headerId);
+   }
+
+   getFakeApiEpisodes(seasonId: number): Observable<Episode> {
+    return this.http.get<Episode>('http://localhost:5203/api/fakeEpisode/' + seasonId);
+   }
+
    getTestSeason(): Season[] {
     return this.testSeasons;
    }

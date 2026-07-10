@@ -1,4 +1,5 @@
 ﻿using Common.Database.Model;
+using Common.Database.Seed;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using System.Reflection.Metadata;
@@ -54,6 +55,11 @@ namespace Common.Database
                 .HasMany(p => p.Tags)
                 .WithMany(t => t.Pictures)
                 .UsingEntity(j => j.ToTable("PictureTags"));
+
+
+            modelBuilder.Entity<Header>().HasData(SeedingHeaders.SeedHeaders());
+            modelBuilder.Entity<Season>().HasData(SeedingSeasons.SeedSeason());
+            modelBuilder.Entity<Episode>().HasData(SeedingEpisodes.SeedEpisodes());
         }
     }
 

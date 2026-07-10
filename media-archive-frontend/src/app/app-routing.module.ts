@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ShowHeadersComponent } from './mainMenu/show-headers/show-headers.component';
 import { ShowSeasonsComponent } from './mainMenu/show-seasons/show-seasons.component';
+import { ShowVideoComponent } from './mainMenu/show-video/show-video.component';
 
 const routes: Routes = [
   {
@@ -11,6 +12,10 @@ const routes: Routes = [
   {
     path: 'season/:id',
     component: ShowSeasonsComponent
+  },
+  {
+    path: 'episode/:id',
+    component: ShowVideoComponent
   }
 ];
 

@@ -1,19 +1,17 @@
-<p (click)="getHeaderId()">show-seasons works!</p>
-<h1>Title of Show 1: {{getFakeTitle()}}</h1>
-
+<h1>{{displayedTitle}}</h1>
 
 <div class="dropdown">
   <button class="dropbtn">Seasons</button>
 
   <div class="dropdown-content">
-    <a *ngFor="let season of getFakeSeason()">
-      <span (click)="greet(season.id)">{{ season.headerId }} {{ season.title }}</span>
+    <a *ngFor="let season of displayedSeasons">
+      <span (click)="renderEpisodes(season.id)">{{ season.headerId }} {{ season.title }}</span>
     </a>
   </div>
 </div>
 
 <div class="episodeList">
-  <div class="episodeTiles" *ngFor="let episode of getFakeEpisodes()">
+  <div class="episodeTiles" *ngFor="let episode of displayedEpisodes">
     <app-episode-tile [title]="episode.title" [episodeSign]="episode.episodeSign" [id]="episode.id"></app-episode-tile>
   </div>
 </div>

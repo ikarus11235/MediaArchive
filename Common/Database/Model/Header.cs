@@ -4,12 +4,12 @@
     {
         public int Id { get; set; }
 
-        public string Title { get; set; } = "DefaultTitle";
+        public string? Title { get; set; }
 
         public string? ThumbNailPath { get; set; }
 
         public byte[]? Logo { get; set; }
 
-        public ICollection<Season> Seasons { get; } = new List<Season>();
+        public ICollection<Season>? Seasons { get; set; }
     }
 }

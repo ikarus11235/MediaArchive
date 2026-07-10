@@ -11,7 +11,8 @@
     <p>{{header.title}}</p>
 </div> -->
 <div class="headers">
-<div *ngFor="let header of testData()">
-    <app-header-tile [title]="header.title" [thumbNailPath]="header.thumbNail" [headerId]="header.id"></app-header-tile>
-</div>
+  <div *ngFor="let header of displayedHeaders">
+    <app-header-tile [title]="header.title" [thumbNailPath]="header.thumbNailPath" [headerId]="header.id"></app-header-tile>
+    
+  </div>
 </div>

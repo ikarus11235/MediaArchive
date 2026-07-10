@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Common.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260625161805_MediaArchive")]
-    partial class MediaArchive
+    [Migration("20260710144017_MediaMigration")]
+    partial class MediaMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,6 +56,35 @@ namespace Common.Migrations
                     b.HasIndex("SeasonId");
 
                     b.ToTable("Episode");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "The Description",
+                            EpisodeSign = "S1E1",
+                            SeasonId = 1,
+                            Title = "MyEpisode",
+                            VideoPath = "default/videos/LifeOfBrian.mp4"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "The Description",
+                            EpisodeSign = "S1E2",
+                            SeasonId = 1,
+                            Title = "MyEpisode2",
+                            VideoPath = "default/videos/LifeOfBrian.mp4"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "The other description",
+                            EpisodeSign = "S2E1",
+                            SeasonId = 2,
+                            Title = "New Episode",
+                            VideoPath = "default/videos/LifeOfBrian.mp4"
+                        });
                 });
 
             modelBuilder.Entity("Common.Database.Model.Header", b =>
@@ -73,12 +102,19 @@ namespace Common.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Header");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ThumbNailPath = "default/images/closeup-open-textbook.jpg",
+                            Title = "Show Title"
+                        });
                 });
 
             modelBuilder.Entity("Common.Database.Model.Picture", b =>
@@ -123,6 +159,20 @@ namespace Common.Migrations
                     b.HasIndex("HeaderId");
 
                     b.ToTable("Season");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            HeaderId = 1,
+                            Title = "Season I"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            HeaderId = 1,
+                            Title = "Season II"
+                        });
                 });
 
             modelBuilder.Entity("Common.Database.Model.Tag", b =>

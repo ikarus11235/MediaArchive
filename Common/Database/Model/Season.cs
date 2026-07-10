@@ -10,6 +10,6 @@
 
         public string Title { get; set; }
 
-        public ICollection<Episode> Episodes { get; } = new List<Episode>();
+        public ICollection<Episode> Episodes { get; set; }
     }
 }

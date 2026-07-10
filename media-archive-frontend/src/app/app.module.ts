@@ -9,6 +9,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { HeaderTileComponent } from './templates/header-tile/header-tile.component';
 import { ShowSeasonsComponent } from './mainMenu/show-seasons/show-seasons.component';
 import { EpisodeTileComponent } from './templates/episode-tile/episode-tile.component';
+import { ShowVideoComponent } from './mainMenu/show-video/show-video.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { EpisodeTileComponent } from './templates/episode-tile/episode-tile.comp
     ShowHeadersComponent,
     HeaderTileComponent,
     ShowSeasonsComponent,
-    EpisodeTileComponent
+    EpisodeTileComponent,
+    ShowVideoComponent
   ],
   imports: [
     BrowserModule,
