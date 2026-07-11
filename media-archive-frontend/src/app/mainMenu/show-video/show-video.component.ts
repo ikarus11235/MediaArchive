@@ -1,6 +1,7 @@
-import { Component, inject, Input, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, inject, Input, OnInit, signal } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MediaDataServiceService } from '../../services/media-data-service.service';
+import { Episode } from '../../interface/episode';
 
 @Component({
   selector: 'app-show-video',
@@ -8,13 +9,10 @@ import { MediaDataServiceService } from '../../services/media-data-service.servi
   templateUrl: './show-video.component.html',
   styleUrl: './show-video.component.scss'
 })
-export class ShowVideoComponent {
-  @Input() id: number = 0;
-  @Input() episodeSign: string = '';
-  @Input() seasonId: number = 0;
-  @Input() title: string = '';
-  @Input() description: string = '';
-  @Input() videoPath: string = '';
+export class ShowVideoComponent implements OnInit {
+  displayedEpisode: Episode | any;
+  private route = inject(ActivatedRoute); 
+  private router = inject(Router);
 
   episodeId = signal('');
   private activatedRoute = inject(ActivatedRoute);
@@ -25,6 +23,16 @@ export class ShowVideoComponent {
     })
   }
 
+  ngOnInit(): void {
+    let initId = parseInt(this.episodeId())
+    this.mediaService.getApiEpisodeById(initId).subscribe(episode => {
+      this.displayedEpisode = episode;
+    });
 
+  }
+
+  navigateToSeasons(id: number){
+    this.router.navigate(['/season', id]);
+  }
 
 }

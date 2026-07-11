@@ -52,6 +52,10 @@ export class ShowSeasonsComponent implements OnInit{
     });
   }
 
+  navigateToHeaders(){
+    this.router.navigate(['/headers']);
+  }
+
 
   greet(id: number): void {
     console.log(id);

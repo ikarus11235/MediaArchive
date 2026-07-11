@@ -17,63 +17,17 @@ namespace MediaController.Controllers
             this._dbContextFactory = dbContextFactory;
         }
 
-        [HttpGet("headers")]
-        public ActionResult<IEnumerable<HeaderDto>> GetHeaders()
-        {
-            var dbContext = _dbContextFactory.CreateDbContext();
-            var headers = dbContext.Set<Header>().ToList();
-            if (!headers.Any())
-            {
-                return NotFound();
-            }
-            var headerDtos = new List<HeaderDto>();
-            foreach (var header in headers) 
-            {
-                headerDtos.Add(new HeaderDto
-                {
-                    Id = header.Id,
-                    Title = header.Title,
-                    ThumbNailPath = header.ThumbNailPath,
-                    //Logo = null
-                });
-            }
-            
-            return Ok(headerDtos);
-        }
+        #region Fake Messages
 
         [HttpGet("fakeHeaders")]
         public ActionResult<IEnumerable<HeaderDto>> GetFakeHeaders()
         {
             var headers = new List<HeaderDto>();
-            headers.Add(new HeaderDto{ Id = 1, Title = "FakeTitle" });
+            headers.Add(new HeaderDto { Id = 1, Title = "FakeTitle" });
             headers.Add(new HeaderDto { Id = 2, Title = "My Mock Show" });
             headers.Add(new HeaderDto { Id = 3, Title = "For Nothing" });
 
             return Ok(headers);
-        }
-
-        [HttpGet("seasons/{headerId}")]
-        public ActionResult<IEnumerable<SeasonDto>> GetSeasons(int headerId)
-        {
-            var dbContext = _dbContextFactory.CreateDbContext();
-            var seasons = dbContext.Set<Season>().Where(q => q.HeaderId == headerId).ToList();
-            if (!seasons.Any())
-            {
-                return NotFound();
-            }
-            var seasonDtos = new List<SeasonDto>();
-            foreach (var season in seasons)
-            {
-                seasonDtos.Add(new SeasonDto
-                {
-                    Id = season.Id,
-                    Title = season.Title,
-                    Number = season.Id,
-                    HeaderId = season.HeaderId
-                });
-            }
-
-            return Ok(seasonDtos);
         }
 
         [HttpGet("fakeSeasons/{headerId}")]
@@ -97,29 +51,6 @@ namespace MediaController.Controllers
             }
 
             return Ok(result);
-        }
-
-        [HttpGet("episodes/{seasonId}")]
-        public ActionResult<IEnumerable<EpisodeDto>> GetEpisodes(int seasonId)
-        {
-            var dbContext = _dbContextFactory.CreateDbContext();
-            var episodes = dbContext.Set<Episode>().Where(q => q.SeasonId == seasonId).ToList();
-            if (!episodes.Any())
-            {
-                return NotFound();
-            }
-            var episodeDtos = new List<EpisodeDto>();
-            foreach (var episode in episodes)
-            {
-                episodeDtos.Add(new EpisodeDto
-                {
-                    Id = episode.Id,
-                    Title = episode.Title,
-                    SeasonId = episode.SeasonId,
-                });
-            }
-
-            return Ok(episodeDtos);
         }
 
         [HttpGet("fakeEpisodes/{seasonId}")]
@@ -148,6 +79,97 @@ namespace MediaController.Controllers
 
             return Ok(episodes);
         }
+
+        #endregion
+
+        [HttpGet("headers")]
+        public ActionResult<IEnumerable<HeaderDto>> GetHeaders()
+        {
+            var dbContext = _dbContextFactory.CreateDbContext();
+            var headers = dbContext.Set<Header>().ToList();
+            if (!headers.Any())
+            {
+                return NotFound();
+            }
+            var headerDtos = new List<HeaderDto>();
+            foreach (var header in headers) 
+            {
+                headerDtos.Add(new HeaderDto
+                {
+                    Id = header.Id,
+                    Title = header.Title,
+                    ThumbNailPath = header.ThumbNailPath,
+                    //Logo = null
+                });
+            }
+            
+            return Ok(headerDtos);
+        }
+
+        
+
+        [HttpGet("seasons/{headerId}")]
+        public ActionResult<IEnumerable<SeasonDto>> GetSeasons(int headerId)
+        {
+            var dbContext = _dbContextFactory.CreateDbContext();
+            var seasons = dbContext.Set<Season>().AsNoTracking().Where(q => q.HeaderId == headerId).ToList();
+            if (!seasons.Any())
+            {
+                return NotFound();
+            }
+            var seasonDtos = new List<SeasonDto>();
+            foreach (var season in seasons)
+            {
+                seasonDtos.Add(new SeasonDto
+                {
+                    Id = season.Id,
+                    Title = season.Title,
+                    Number = season.Id,
+                    HeaderId = season.HeaderId
+                });
+            }
+
+            return Ok(seasonDtos);
+        }
+
+        
+
+        [HttpGet("episodes/{seasonId}")]
+        public ActionResult<IEnumerable<EpisodeDto>> GetEpisodes(int seasonId)
+        {
+            var dbContext = _dbContextFactory.CreateDbContext();
+            var episodes = dbContext.Set<Episode>().AsNoTracking().Where(q => q.SeasonId == seasonId).ToList();
+            if (!episodes.Any())
+            {
+                return NotFound();
+            }
+            var episodeDtos = new List<EpisodeDto>();
+            foreach (var episode in episodes)
+            {
+                episodeDtos.Add(new EpisodeDto
+                {
+                    Id = episode.Id,
+                    Title = episode.Title,
+                    SeasonId = episode.SeasonId,
+                });
+            }
+
+            return Ok(episodeDtos);
+        }
+
+        [HttpGet("singleEpisodes/{episodeId}")]
+        public ActionResult<IEnumerable<EpisodeDto>> GetEpisodeById(int episodeId)
+        {
+            var dbContext = _dbContextFactory.CreateDbContext();
+            var episode = dbContext.Set<Episode>().AsNoTracking().SingleOrDefault(q => q.Id == episodeId);
+            if (episode == null)
+            {
+                return NotFound();
+            }
+            
+            return Ok(episode);
+        }
+
 
         [HttpGet("pictures")]
         public ActionResult<IEnumerable<PictureDto>> GetPictures()

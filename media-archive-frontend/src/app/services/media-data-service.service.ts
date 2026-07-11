@@ -111,6 +111,10 @@ export class MediaDataServiceService {
     return this.http.get<Episode[]>('http://localhost:5203/api/episodes/' + seasonId);
    }
 
+   getApiEpisodeById(episodeId: number): Observable<Episode> {
+    return this.http.get<Episode>('http://localhost:5203/api/singleEpisodes/' + episodeId);
+   }
+
    getFakeApiHeader(): Observable<Header> {
     return this.http.get<Header>('http://localhost:5203/api/fakeHeaders');
    }
