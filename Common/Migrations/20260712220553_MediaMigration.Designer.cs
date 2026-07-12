@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Common.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260710144017_MediaMigration")]
+    [Migration("20260712220553_MediaMigration")]
     partial class MediaMigration
     {
         /// <inheritdoc />
@@ -137,6 +137,56 @@ namespace Common.Migrations
                     b.HasIndex("EpisodeId");
 
                     b.ToTable("Picture");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            EpisodeId = 1,
+                            ImagePath = "default/images/closeup-open-textbook.jpg"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            EpisodeId = 1,
+                            ImagePath = "default/images/closeup-open-textbook.jpg"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            EpisodeId = 1,
+                            ImagePath = "default/images/closeup-open-textbook.jpg"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            EpisodeId = 2,
+                            ImagePath = "default/images/closeup-open-textbook.jpg"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            EpisodeId = 2,
+                            ImagePath = "default/images/closeup-open-textbook.jpg"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            EpisodeId = 3,
+                            ImagePath = "default/images/closeup-open-textbook.jpg"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            EpisodeId = 3,
+                            ImagePath = "default/images/closeup-open-textbook.jpg"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            EpisodeId = 3,
+                            ImagePath = "default/images/closeup-open-textbook.jpg"
+                        });
                 });
 
             modelBuilder.Entity("Common.Database.Model.Season", b =>

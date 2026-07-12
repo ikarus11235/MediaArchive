@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Season } from '../interface/season';
 import { Episode } from '../interface/episode';
+import { Picture } from '../interface/picture';
 
 interface User {
   firstname: string;
@@ -113,6 +114,10 @@ export class MediaDataServiceService {
 
    getApiEpisodeById(episodeId: number): Observable<Episode> {
     return this.http.get<Episode>('http://localhost:5203/api/singleEpisodes/' + episodeId);
+   }
+
+   getApiPicturesByEpisodesId(episodeId: number): Observable<Picture[]> {
+    return this.http.get<Picture[]>('http://localhost:5203/api/pictures/' + episodeId);
    }
 
    getFakeApiHeader(): Observable<Header> {

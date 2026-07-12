@@ -60,6 +60,7 @@ namespace Common.Database
             modelBuilder.Entity<Header>().HasData(SeedingHeaders.SeedHeaders());
             modelBuilder.Entity<Season>().HasData(SeedingSeasons.SeedSeason());
             modelBuilder.Entity<Episode>().HasData(SeedingEpisodes.SeedEpisodes());
+            modelBuilder.Entity<Picture>().HasData(SeedingPictures.SeedPictures());
         }
     }
 

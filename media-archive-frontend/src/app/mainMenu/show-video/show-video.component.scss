@@ -10,3 +10,15 @@
   margin: 4px 2px;
   cursor: pointer;
 }
+
+.pictures{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.pictures img{
+  width: 350px;
+  height: 100%;
+  padding-right: 10px;
+}

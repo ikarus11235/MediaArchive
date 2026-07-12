@@ -177,6 +177,21 @@ namespace Common.Migrations
                     { 3, "The other description", "S2E1", 2, "New Episode", "default/videos/LifeOfBrian.mp4" }
                 });
 
+            migrationBuilder.InsertData(
+                table: "Picture",
+                columns: new[] { "Id", "EpisodeId", "ImagePath" },
+                values: new object[,]
+                {
+                    { 1, 1, "default/images/closeup-open-textbook.jpg" },
+                    { 2, 1, "default/images/closeup-open-textbook.jpg" },
+                    { 3, 1, "default/images/closeup-open-textbook.jpg" },
+                    { 4, 2, "default/images/closeup-open-textbook.jpg" },
+                    { 5, 2, "default/images/closeup-open-textbook.jpg" },
+                    { 6, 3, "default/images/closeup-open-textbook.jpg" },
+                    { 7, 3, "default/images/closeup-open-textbook.jpg" },
+                    { 8, 3, "default/images/closeup-open-textbook.jpg" }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Episode_SeasonId",
                 table: "Episode",

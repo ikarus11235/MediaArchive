@@ -57,21 +57,21 @@ namespace MediaController.Controllers
         public ActionResult<IEnumerable<EpisodeDto>> GetFakeEpisodes(int seasonId)
         {
             var episodes = new List<EpisodeDto>();
-            episodes.Add(new EpisodeDto { Id = 1, SeasonId = 1, Title = "Episode 01" });
-            episodes.Add(new EpisodeDto { Id = 2, SeasonId = 1, Title = "Episode 02" });
-            episodes.Add(new EpisodeDto { Id = 3, SeasonId = 1, Title = "Episode 03" });
-            episodes.Add(new EpisodeDto { Id = 4, SeasonId = 1, Title = "Episode 04" });
-            episodes.Add(new EpisodeDto { Id = 5, SeasonId = 1, Title = "Episode 05" });
-            episodes.Add(new EpisodeDto { Id = 6, SeasonId = 2, Title = "Episode 01" });
-            episodes.Add(new EpisodeDto { Id = 7, SeasonId = 2, Title = "Episode 02" });
-            episodes.Add(new EpisodeDto { Id = 8, SeasonId = 2, Title = "Episode 03" });
-            episodes.Add(new EpisodeDto { Id = 9, SeasonId = 3, Title = "Episode 01" });
-            episodes.Add(new EpisodeDto { Id = 10, SeasonId = 3, Title = "Episode 02" });
+            episodes.Add(new EpisodeDto { Id = 1, EpisodeId = 1, Title = "Episode 01" });
+            episodes.Add(new EpisodeDto { Id = 2, EpisodeId = 1, Title = "Episode 02" });
+            episodes.Add(new EpisodeDto { Id = 3, EpisodeId = 1, Title = "Episode 03" });
+            episodes.Add(new EpisodeDto { Id = 4, EpisodeId = 1, Title = "Episode 04" });
+            episodes.Add(new EpisodeDto { Id = 5, EpisodeId = 1, Title = "Episode 05" });
+            episodes.Add(new EpisodeDto { Id = 6, EpisodeId = 2, Title = "Episode 01" });
+            episodes.Add(new EpisodeDto { Id = 7, EpisodeId = 2, Title = "Episode 02" });
+            episodes.Add(new EpisodeDto { Id = 8, EpisodeId = 2, Title = "Episode 03" });
+            episodes.Add(new EpisodeDto { Id = 9, EpisodeId = 3, Title = "Episode 01" });
+            episodes.Add(new EpisodeDto { Id = 10, EpisodeId = 3, Title = "Episode 02" });
 
             var result = new List<EpisodeDto>();
             foreach (var episode in episodes)
             {
-                if (episode.SeasonId == seasonId)
+                if (episode.EpisodeId == seasonId)
                 {
                     result.Add(episode);
                 }
@@ -92,7 +92,7 @@ namespace MediaController.Controllers
                 return NotFound();
             }
             var headerDtos = new List<HeaderDto>();
-            foreach (var header in headers) 
+            foreach (var header in headers)
             {
                 headerDtos.Add(new HeaderDto
                 {
@@ -102,11 +102,11 @@ namespace MediaController.Controllers
                     //Logo = null
                 });
             }
-            
+
             return Ok(headerDtos);
         }
 
-        
+
 
         [HttpGet("seasons/{headerId}")]
         public ActionResult<IEnumerable<SeasonDto>> GetSeasons(int headerId)
@@ -132,7 +132,7 @@ namespace MediaController.Controllers
             return Ok(seasonDtos);
         }
 
-        
+
 
         [HttpGet("episodes/{seasonId}")]
         public ActionResult<IEnumerable<EpisodeDto>> GetEpisodes(int seasonId)
@@ -150,7 +150,7 @@ namespace MediaController.Controllers
                 {
                     Id = episode.Id,
                     Title = episode.Title,
-                    SeasonId = episode.SeasonId,
+                    EpisodeId = episode.SeasonId,
                 });
             }
 
@@ -166,10 +166,33 @@ namespace MediaController.Controllers
             {
                 return NotFound();
             }
-            
+
             return Ok(episode);
         }
 
+        [HttpGet("pictures/{episodeId}")]
+        public ActionResult<IEnumerable<PictureDto>> GetPictureBySeasonId(int episodeId) 
+        {
+            var dbContext = _dbContextFactory.CreateDbContext();
+            var pictures = dbContext.Set<Picture>().AsNoTracking().Where(q => q.EpisodeId == episodeId).ToList();
+            if (pictures == null)
+            {
+                return NotFound();
+            }
+
+            var pictureDtos = new List<PictureDto>();
+            foreach (var picture in pictures)
+            {
+                pictureDtos.Add(new PictureDto
+                {
+                    Id = picture.Id,
+                    EpisodeId = picture.EpisodeId,
+                    Url = picture.ImagePath
+                });
+            }
+
+            return Ok(pictures);
+        }
 
         [HttpGet("pictures")]
         public ActionResult<IEnumerable<PictureDto>> GetPictures()
