@@ -1,0 +1,10 @@
+<div>
+  <button class="button" (click)="navigateToEpisode()">Back</button>
+</div>
+
+<!-- <h2 *ngIf="displayedPictures">Pictures:</h2> -->
+<div class="pictures" *ngIf="displayedPictures">
+  <div *ngFor="let picture of displayedPictures">
+    <img [src]="picture.imagePath" alt="Alt">
+  </div>
+</div>

@@ -10,6 +10,7 @@ import { HeaderTileComponent } from './templates/header-tile/header-tile.compone
 import { ShowSeasonsComponent } from './mainMenu/show-seasons/show-seasons.component';
 import { EpisodeTileComponent } from './templates/episode-tile/episode-tile.component';
 import { ShowVideoComponent } from './mainMenu/show-video/show-video.component';
+import { ShowGalleryComponent } from './mainMenu/show-gallery/show-gallery.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ShowVideoComponent } from './mainMenu/show-video/show-video.component';
     HeaderTileComponent,
     ShowSeasonsComponent,
     EpisodeTileComponent,
-    ShowVideoComponent
+    ShowVideoComponent,
+    ShowGalleryComponent
   ],
   imports: [
     BrowserModule,

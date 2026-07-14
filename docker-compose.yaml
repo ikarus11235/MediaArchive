@@ -16,13 +16,14 @@ services:
       - mssql
     environment:
       ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:5203
 
       # appsettings.json => ConnectionStrings:DefaultConnection
-      ConnectionStrings__DefaultConnection: >
+      ConnectionString: >
         Server=mssql,1433;
         Database=MediaArchive;
         User Id=sa;
         Password=${SA_PASSWORD};
         TrustServerCertificate=True;
     ports:
-      - "8080:8080"
+      - "5203:5203"

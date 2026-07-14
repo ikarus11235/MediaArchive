@@ -41,4 +41,8 @@ export class ShowVideoComponent implements OnInit {
     this.router.navigate(['/season', id]);
   }
 
+  navigateToGallery(id: number){
+    this.router.navigate(['/gallery', id])
+  }
+
 }

@@ -11,11 +11,22 @@ namespace MediaController
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            string? connectionString = Environment.GetEnvironmentVariable("ConnectionString");
+#if DEBUG
+            connectionString = "Server=localhost,1433;Database=MediaArchive;User Id=sa;Password=Password123!;TrustServerCertificate=True;";
+#endif
+            if (connectionString == null)
+            {
+                return;
+            }
+
             // Add services to the container.
             builder.Services.AddDbContextFactory<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer("Server=localhost,1433;Database=MediaArchive;User Id=sa;Password=Password123!;TrustServerCertificate=True;");
+                options.UseSqlServer(connectionString);
             });
+
+
 
             builder.Services.AddControllers();
 
@@ -57,7 +68,7 @@ namespace MediaController
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "Meine API v1");
                 // Optional: Swagger direkt auf der Startseite
-                // options.RoutePrefix = string.Empty;
+                options.RoutePrefix = string.Empty;
             });
 
             // Configure the HTTP request pipeline.
