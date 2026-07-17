@@ -183,13 +183,13 @@ namespace Common.Migrations
                 values: new object[,]
                 {
                     { 1, 1, "default/images/closeup-open-textbook.jpg" },
-                    { 2, 1, "default/images/closeup-open-textbook.jpg" },
-                    { 3, 1, "default/images/closeup-open-textbook.jpg" },
+                    { 2, 1, "default/images/open-page.jpg" },
+                    { 3, 1, "default/images/open-page-2.jpg" },
                     { 4, 2, "default/images/closeup-open-textbook.jpg" },
-                    { 5, 2, "default/images/closeup-open-textbook.jpg" },
+                    { 5, 2, "default/images/open-page.jpg" },
                     { 6, 3, "default/images/closeup-open-textbook.jpg" },
-                    { 7, 3, "default/images/closeup-open-textbook.jpg" },
-                    { 8, 3, "default/images/closeup-open-textbook.jpg" }
+                    { 7, 3, "default/images/open-page.jpg" },
+                    { 8, 3, "default/images/open-page-2.jpg" }
                 });
 
             migrationBuilder.CreateIndex(

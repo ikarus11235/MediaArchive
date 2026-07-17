@@ -6,8 +6,8 @@
   <source [src]="displayedEpisode.videoPath">
 Your browser does not support the video tag.
 </video>
-<h1 *ngIf="displayedEpisode">{{displayedEpisode.title}}</h1>
-<h2 *ngIf="dispayedPictures" (click)="navigateToGallery(displayedEpisode.id)">Pictures:</h2>
+<h1 class="captions" *ngIf="displayedEpisode">{{displayedEpisode.title}}</h1>
+<h2 class="captions" *ngIf="dispayedPictures" (click)="navigateToGallery(displayedEpisode.id)">Pictures:</h2>
 <div class="pictures" *ngIf="dispayedPictures">
   <div *ngFor="let picture of dispayedPictures">
     <img [src]="picture.imagePath" alt="Alt">

@@ -146,13 +146,13 @@ namespace Common.Migrations
                         {
                             Id = 2,
                             EpisodeId = 1,
-                            ImagePath = "default/images/closeup-open-textbook.jpg"
+                            ImagePath = "default/images/open-page.jpg"
                         },
                         new
                         {
                             Id = 3,
                             EpisodeId = 1,
-                            ImagePath = "default/images/closeup-open-textbook.jpg"
+                            ImagePath = "default/images/open-page-2.jpg"
                         },
                         new
                         {
@@ -164,7 +164,7 @@ namespace Common.Migrations
                         {
                             Id = 5,
                             EpisodeId = 2,
-                            ImagePath = "default/images/closeup-open-textbook.jpg"
+                            ImagePath = "default/images/open-page.jpg"
                         },
                         new
                         {
@@ -176,13 +176,13 @@ namespace Common.Migrations
                         {
                             Id = 7,
                             EpisodeId = 3,
-                            ImagePath = "default/images/closeup-open-textbook.jpg"
+                            ImagePath = "default/images/open-page.jpg"
                         },
                         new
                         {
                             Id = 8,
                             EpisodeId = 3,
-                            ImagePath = "default/images/closeup-open-textbook.jpg"
+                            ImagePath = "default/images/open-page-2.jpg"
                         });
                 });
 

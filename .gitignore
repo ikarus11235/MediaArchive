@@ -7,3 +7,5 @@ bin/
 #Common\bin\
 *.user
 .env
+
+media-archive-frontend/public/personal/*

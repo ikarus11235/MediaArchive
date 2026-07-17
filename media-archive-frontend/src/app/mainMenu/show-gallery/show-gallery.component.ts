@@ -6,7 +6,7 @@ import { MediaDataServiceService } from '../../services/media-data-service.servi
   selector: 'app-show-gallery',
   standalone: false,
   templateUrl: './show-gallery.component.html',
-  styleUrl: './show-gallery.component.scss'
+  styleUrl: './show-gallery.component.scss',
 })
 export class ShowGalleryComponent {
   displayedPictures: Headers[] | any;
@@ -38,7 +38,7 @@ export class ShowGalleryComponent {
 
   incrementPictureIndex(): void {
     if (this.pictureIndex == this.displayedPictures.length - 1) {
-      this.pictureIndex = this.displayedPictures.length - 1;
+      this.pictureIndex = 0;
     } else {
       this.pictureIndex = this.pictureIndex + 1;
     }
@@ -47,7 +47,7 @@ export class ShowGalleryComponent {
 
   decrementPictureIndex(): void {
     if (this.pictureIndex == 0) {
-      this.pictureIndex = 0;
+      this.pictureIndex = this.displayedPictures.length - 1;
     } else {
       this.pictureIndex = this.pictureIndex - 1;
     }
