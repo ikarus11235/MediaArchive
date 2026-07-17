@@ -2,6 +2,12 @@
   <button class="button" (click)="navigateToEpisode()">Back</button>
 </div>
 
+<div class="mainScreen" *ngIf="displayedPictures" >
+  <p class="prev" (click)="decrementPictureIndex()">Previous</p>
+  <img [src]="displayedPictures[pictureIndex].imagePath" alt="">
+  <p class="next" (click)="incrementPictureIndex()">Next</p>
+</div>
+
 <!-- <h2 *ngIf="displayedPictures">Pictures:</h2> -->
 <div class="pictures" *ngIf="displayedPictures">
   <div *ngFor="let picture of displayedPictures">

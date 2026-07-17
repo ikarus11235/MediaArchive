@@ -10,6 +10,7 @@ import { MediaDataServiceService } from '../../services/media-data-service.servi
 })
 export class ShowGalleryComponent {
   displayedPictures: Headers[] | any;
+  pictureIndex: number = 0;
 
   episodeId = signal('');
   private activatedRoute = inject(ActivatedRoute);
@@ -33,6 +34,24 @@ export class ShowGalleryComponent {
   navigateToEpisode(){
     let initId = parseInt(this.episodeId());
     this.router.navigate(['/episode', initId]);
+  }
+
+  incrementPictureIndex(): void {
+    if (this.pictureIndex == this.displayedPictures.length - 1) {
+      this.pictureIndex = this.displayedPictures.length - 1;
+    } else {
+      this.pictureIndex = this.pictureIndex + 1;
+    }
+    //console.log(this.pictureIndex);
+  }
+
+  decrementPictureIndex(): void {
+    if (this.pictureIndex == 0) {
+      this.pictureIndex = 0;
+    } else {
+      this.pictureIndex = this.pictureIndex - 1;
+    }
+    //console.log(this.pictureIndex);
   }
 
 }
