@@ -1,0 +1,40 @@
+<div class="backdrop">
+
+    <div class="dialog">
+
+        <h2>Neuen Header anlegen</h2>
+
+        <label>Titel</label>
+        <input
+            type="text"
+            [(ngModel)]="title">
+
+        <label>Thumbnail</label>
+        <input
+            #fileInput
+            type="file"
+            accept="image/*"
+            hidden
+            (change)="onFileSelected($event)">
+
+<button (click)="fileInput.click()">
+    Thumbnail auswählen
+</button>
+
+<div *ngIf="selectedFile">
+    {{ selectedFile.name }}
+</div>
+
+        <div class="buttons">
+            <button (click)="cancel.emit()">
+                Abbrechen
+            </button>
+
+            <button (click)="onSave()">
+                Speichern
+            </button>
+        </div>
+
+    </div>
+
+</div>

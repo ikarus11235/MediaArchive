@@ -1,15 +1,13 @@
-<!-- <div class="headers">
-    <app-header-tile [title]="'The Title title title'" [thumbNailPath]="'images/closeup-open-textbook.jpg'" [headerId]="1"></app-header-tile>
-    <app-header-tile [title]="'The Title'" [thumbNailPath]="'images/closeup-open-textbook.jpg'" [headerId]="2"></app-header-tile>
-    <app-header-tile [title]="'The Title'" [thumbNailPath]="'../../../../closeup-open-textbook2.jpg'" [headerId]="3"></app-header-tile>
-    <app-header-tile [title]="'The Title'" [thumbNailPath]="'images/closeup-open-textbook.jpg'" [headerId]="4"></app-header-tile>
-    <app-header-tile [title]="'The Title'" [thumbNailPath]="'images/closeup-open-textbook.jpg'" [headerId]="5"></app-header-tile>
-    <app-header-tile [title]="'The Title'" [thumbNailPath]="'images/closeup-open-textbook.jpg'" [headerId]="6"></app-header-tile>
-</div> -->
+<button (click)="openDialog()">
+    Neuer Header
+</button>
 
-<!-- <div *ngFor="let header of testData()">
-    <p>{{header.title}}</p>
-</div> -->
+<app-header-dialog-component
+    *ngIf="showDialog"
+    (cancel)="closeDialog()"
+    (save)="createHeader($event)">
+</app-header-dialog-component>
+
 <div class="headers">
   <div *ngFor="let header of displayedHeaders">
     <app-header-tile [title]="header.title" [thumbNailPath]="header.thumbNailPath" [headerId]="header.id"></app-header-tile>

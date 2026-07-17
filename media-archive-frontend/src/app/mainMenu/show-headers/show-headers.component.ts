@@ -32,4 +32,25 @@ export class ShowHeadersComponent implements OnInit {
     })
   }
 
+  showDialog = false;
+
+openDialog() {
+  this.showDialog = true;
+}
+
+closeDialog() {
+  this.showDialog = false;
+}
+
+createHeader(event: { title: string; thumbNailPath: string }) {
+
+  console.log(event.title);
+  console.log(event.thumbNailPath);
+
+  // später:
+  // this.mediaService.createHeader(event).subscribe(...);
+
+  this.closeDialog();
+}
+
 }

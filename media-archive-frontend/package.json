@@ -2,6 +2,7 @@
   "name": "media-archive-frontend",
   "version": "0.0.0",
   "scripts": {
+    "generate-documents": "node scripts/generate-documents.js",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",

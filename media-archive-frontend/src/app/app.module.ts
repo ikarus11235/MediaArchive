@@ -11,6 +11,8 @@ import { ShowSeasonsComponent } from './mainMenu/show-seasons/show-seasons.compo
 import { EpisodeTileComponent } from './templates/episode-tile/episode-tile.component';
 import { ShowVideoComponent } from './mainMenu/show-video/show-video.component';
 import { ShowGalleryComponent } from './mainMenu/show-gallery/show-gallery.component';
+import { HeaderDialogComponentComponent } from './templates/header-dialog-component/header-dialog-component.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -20,12 +22,14 @@ import { ShowGalleryComponent } from './mainMenu/show-gallery/show-gallery.compo
     ShowSeasonsComponent,
     EpisodeTileComponent,
     ShowVideoComponent,
-    ShowGalleryComponent
+    ShowGalleryComponent,
+    HeaderDialogComponentComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    RouterOutlet
+    RouterOutlet,
+    FormsModule
   ],
   providers: [provideHttpClient()],
   bootstrap: [AppComponent]
