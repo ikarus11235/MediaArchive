@@ -13,6 +13,7 @@ import { ShowVideoComponent } from './mainMenu/show-video/show-video.component';
 import { ShowGalleryComponent } from './mainMenu/show-gallery/show-gallery.component';
 import { HeaderDialogComponentComponent } from './templates/header-dialog-component/header-dialog-component.component';
 import { FormsModule } from '@angular/forms';
+import { SeasonDialogComponent } from './templates/season-dialog/season-dialog.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { FormsModule } from '@angular/forms';
     EpisodeTileComponent,
     ShowVideoComponent,
     ShowGalleryComponent,
-    HeaderDialogComponentComponent
+    HeaderDialogComponentComponent,
+    SeasonDialogComponent
   ],
   imports: [
     BrowserModule,

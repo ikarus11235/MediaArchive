@@ -1,6 +1,15 @@
 <div>
   <button class="button" (click)="navigateToHeaders()">Back</button>
+  <button class="button" (click)="showSeasonDialog = true">
+  Neue Season
+</button>
 </div>
+
+<app-season-dialog
+    *ngIf="showSeasonDialog"
+    (cancel)="closeSeasonDialog()"
+    (save)="createSeason($event)">
+</app-season-dialog>
 
 <h1>{{displayedTitle}}</h1>
 

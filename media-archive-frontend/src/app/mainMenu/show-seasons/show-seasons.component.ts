@@ -20,6 +20,8 @@ export class ShowSeasonsComponent implements OnInit{
   private route = inject(ActivatedRoute); 
   private router = inject(Router);
 
+  showSeasonDialog = false;
+
   constructor(private mediaService: MediaDataServiceService) {
     this.activatedRoute.params.subscribe((params) => {
       this.headerId.set(params['id']);
@@ -55,6 +57,23 @@ export class ShowSeasonsComponent implements OnInit{
   navigateToHeaders(){
     this.router.navigate(['/headers']);
   }
+
+  openSeasonDialog() {
+  this.showSeasonDialog = true;
+}
+
+closeSeasonDialog() {
+  this.showSeasonDialog = false;
+}
+
+createSeason(data: any) {
+
+  console.log(data);
+
+  // Hier Season speichern
+
+  this.showSeasonDialog = false;
+}
 
 
   greet(id: number): void {

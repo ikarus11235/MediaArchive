@@ -12,6 +12,8 @@ services:
   mediacontroller:
     image: mediacontroller
     container_name: mediacontroller
+    volumes:
+      - mssql-data:/var/opt/mssql
     depends_on:
       - mssql
     environment:
@@ -27,3 +29,6 @@ services:
         TrustServerCertificate=True;
     ports:
       - "5203:5203"
+
+volumes:
+  mssql-data:

@@ -1,0 +1,44 @@
+<div class="backdrop">
+
+  <div class="dialog">
+
+    <h2>Neue Season</h2>
+
+    <label>Titel</label>
+    <input
+      type="text"
+      [(ngModel)]="title">
+
+    <label>Episoden</label>
+
+    <input
+      #fileInput
+      type="file"
+      hidden
+      multiple
+      accept="video/*"
+      (change)="onFilesSelected($event)">
+
+    <button (click)="fileInput.click()">
+      Episoden auswählen
+    </button>
+
+    <div *ngIf="selectedFiles.length > 0">
+      <div *ngFor="let file of selectedFiles">
+        {{ file.name }}
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button (click)="cancel.emit()">
+        Abbrechen
+      </button>
+
+      <button (click)="onSave()">
+        Speichern
+      </button>
+    </div>
+
+  </div>
+
+</div>
