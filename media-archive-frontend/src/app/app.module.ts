@@ -14,6 +14,7 @@ import { ShowGalleryComponent } from './mainMenu/show-gallery/show-gallery.compo
 import { HeaderDialogComponentComponent } from './templates/header-dialog-component/header-dialog-component.component';
 import { FormsModule } from '@angular/forms';
 import { SeasonDialogComponent } from './templates/season-dialog/season-dialog.component';
+import { EpisodeImagesDialogComponent } from './templates/episode-images-dialog/episode-images-dialog.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { SeasonDialogComponent } from './templates/season-dialog/season-dialog.c
     ShowVideoComponent,
     ShowGalleryComponent,
     HeaderDialogComponentComponent,
-    SeasonDialogComponent
+    SeasonDialogComponent,
+    EpisodeImagesDialogComponent
   ],
   imports: [
     BrowserModule,

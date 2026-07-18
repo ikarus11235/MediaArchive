@@ -1,0 +1,41 @@
+<div class="backdrop">
+
+  <div class="dialog">
+
+    <h2>Neue Bilder</h2>
+
+    <label>Bilder</label>
+
+    <input
+      #fileInput
+      type="file"
+      hidden
+      multiple
+      accept=".jpg,.jpeg,.png"
+      (change)="onFilesSelected($event)">
+
+    <button (click)="fileInput.click()">
+      Bilder auswählen
+    </button>
+
+    <div *ngIf="selectedFiles.length">
+
+      <div *ngFor="let file of selectedFiles">
+        {{ file.name }}
+      </div>
+
+    </div>
+
+    <div class="buttons">
+      <button (click)="cancel.emit()">
+        Abbrechen
+      </button>
+
+      <button (click)="onSave()">
+        Speichern
+      </button>
+    </div>
+
+  </div>
+
+</div>

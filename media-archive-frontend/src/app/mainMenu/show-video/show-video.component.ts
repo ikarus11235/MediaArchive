@@ -45,4 +45,23 @@ export class ShowVideoComponent implements OnInit {
     this.router.navigate(['/gallery', id])
   }
 
+  showImagesDialog = false;
+
+openImagesDialog(): void {
+  this.showImagesDialog = true;
+}
+
+closeImagesDialog(): void {
+  this.showImagesDialog = false;
+}
+
+saveImages(files: File[]): void {
+
+  console.log(files);
+
+  // Hier Bilder hochladen
+
+  this.showImagesDialog = false;
+}
+
 }

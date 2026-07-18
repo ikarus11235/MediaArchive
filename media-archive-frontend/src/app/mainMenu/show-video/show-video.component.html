@@ -1,6 +1,15 @@
 <div>
   <button class="button" (click)="navigateToSeasons(displayedEpisode.seasonId)">Back</button>
+  <button (click)="openImagesDialog()">
+    Bilder hinzufügen
+</button>
 </div>
+
+<app-episode-images-dialog
+    *ngIf="showImagesDialog"
+    (cancel)="closeImagesDialog()"
+    (save)="saveImages($event)">
+</app-episode-images-dialog>
 
 <video width="100%" height="700px" controls *ngIf="displayedEpisode">
   <source [src]="displayedEpisode.videoPath">
