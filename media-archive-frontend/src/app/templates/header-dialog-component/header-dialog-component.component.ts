@@ -28,7 +28,7 @@ export class HeaderDialogComponentComponent {
 
     this.save.emit({
       title: this.title,
-      thumbNailPath: `/personal/images/${this.selectedFile.name}`
+      thumbNailPath: `${this.selectedFile.name}`
     });
 
   }

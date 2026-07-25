@@ -58,8 +58,26 @@ closeImagesDialog(): void {
 saveImages(files: File[]): void {
 
   console.log(files);
+  let pictureArray: Picture[] = [];
+  
+  files.forEach(element => {
+    pictureArray.push({
+      id: 0,
+      imagePath: element.name,
+      episode: this.displayedEpisode.id
+    });
+  });
+  
+  console.log(pictureArray);
 
-  // Hier Bilder hochladen
+  this.mediaService.postApiPictures(pictureArray).subscribe({
+    next: (createdPicture) => {
+      console.log('Pictures created', createdPicture);
+    },
+    error: (err) => {
+      console.error(err);
+    }
+  })
 
   this.showImagesDialog = false;
 }

@@ -13,8 +13,9 @@ import { Episode } from '../../interface/episode';
 export class ShowSeasonsComponent implements OnInit{
   headerId = signal('');
   displayedTitle: string = 'My Title...';
-  displayedSeasons: Season[] | any;
-  displayedEpisodes: Episode[] | any;
+  displayedSeasons: Season[] = [];
+  selectedSeasonId: number = 1;
+  displayedEpisodes: Episode[] = [];
   private activatedRoute = inject(ActivatedRoute);
 
   private route = inject(ActivatedRoute); 
@@ -32,10 +33,10 @@ export class ShowSeasonsComponent implements OnInit{
     let searchedHeaderId = parseInt(this.headerId());
     this.mediaService.getApiSeason(searchedHeaderId).subscribe(seasons => {
       this.displayedSeasons = seasons;
-    });
-
-    this.mediaService.getApiEpisodes(1).subscribe(episodes => {
-      this.displayedEpisodes = episodes;
+      console.log(this.displayedSeasons);
+      if (this.displayedSeasons.length != 0 && this.displayedSeasons[0].episodes != null) {
+      this.displayedEpisodes = this.displayedSeasons[0].episodes;
+      }
     });
 
     this.mediaService.getApiHeader().subscribe(headers => {
@@ -49,6 +50,7 @@ export class ShowSeasonsComponent implements OnInit{
   }
 
   renderEpisodes(seasonId: number): void{
+    this.selectedSeasonId = seasonId;
     this.mediaService.getApiEpisodes(seasonId).subscribe(episodes => {
       this.displayedEpisodes = episodes;
     });
@@ -66,14 +68,56 @@ closeSeasonDialog() {
   this.showSeasonDialog = false;
 }
 
-createSeason(data: any) {
+createSeason(event: { title: string; episodes: File[] }) {
+  let searchedHeaderId = parseInt(this.headerId());
+  console.log(event);
 
-  console.log(data);
+  let episodeArray: Episode[] = [];
+  event.episodes.forEach(element => {
+    episodeArray.push({
+      id: 0,
+      description: '',
+      episodeSign: '',
+      seasonId: this.selectedSeasonId,
+      title: element.name,
+      videoPath: element.name
+    });
+  });
 
   // Hier Season speichern
+  const newSeason: Season = {
+      id: 0,
+      title: event.title,
+      headerId: searchedHeaderId,
+      episodes: episodeArray
+    };
+
+  this.mediaService.postApiSeason(newSeason).subscribe({
+    next: (createdSeason) => {
+      console.log('Header erstellt', createdSeason);
+
+      let searchedHeaderId = parseInt(this.headerId());
+      this.mediaService.getApiSeason(searchedHeaderId).subscribe(seasons => {
+        this.displayedSeasons = seasons;
+        console.log(this.displayedSeasons);
+        if (this.displayedSeasons.length != 0 && this.displayedSeasons[0].episodes != null) {
+          this.displayedEpisodes = this.displayedSeasons[0].episodes;
+        }
+      });
+
+    },
+    error: (err) => {
+      console.error(err);
+    }
+  });
 
   this.showSeasonDialog = false;
 }
+
+
+
+
+
 
 
   greet(id: number): void {
@@ -96,6 +140,6 @@ createSeason(data: any) {
     console.log(this.headerId());
   }
 
-
+  
 
 }

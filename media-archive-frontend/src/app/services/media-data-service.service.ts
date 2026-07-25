@@ -23,19 +23,19 @@ export class MediaDataServiceService {
   testHeader : Header[] = [{
     id: 1,
     title: 'TestTitle',
-    thumbNail: 'images/closeup-open-textbook.jpg',
+    thumbNailPath: 'images/closeup-open-textbook.jpg',
     logo: 'TestLogo'
   },
   {
     id: 2,
     title: 'FakeTitle',
-    thumbNail: 'images/closeup-open-textbook.jpg',
+    thumbNailPath: 'images/closeup-open-textbook.jpg',
     logo: 'FakeLogo'
   },
   {
     id: 3,
     title: 'DummyTitle',
-    thumbNail: 'images/closeup-open-textbook.jpg',
+    thumbNailPath: 'images/closeup-open-textbook.jpg',
     logo: 'DummyLogo'
   }];
 
@@ -43,27 +43,32 @@ export class MediaDataServiceService {
     {
       id: 1,
       headerId: 2,
-      title: 'Season 1'
+      title: 'Season 1',
+      episodes: null
     },
     {
       id: 2,
       headerId: 2,
-      title: 'Season 2'
+      title: 'Season 2',
+      episodes: null
     },
     {
       id: 3,
       headerId: 2,
-      title: 'Season 3'
+      title: 'Season 3',
+      episodes: null
     },
     {
       id: 4,
       headerId: 2,
-      title: 'Season 4'
+      title: 'Season 4',
+      episodes: null
     },
     {
       id: 5,
       headerId: 2,
-      title: 'Season 5'
+      title: 'Season 5',
+      episodes: null
     }
   ];
 
@@ -108,6 +113,10 @@ export class MediaDataServiceService {
     return this.http.get<Season[]>('http://localhost:5203/api/seasons/' + headerId);
    }
 
+   postApiSeason(season: Season): Observable<Header> {
+    return this.http.post<Header>('http://localhost:5203/api/seasons', season);
+   }
+
    getApiEpisodes(seasonId: number): Observable<Episode[]> {
     return this.http.get<Episode[]>('http://localhost:5203/api/episodes/' + seasonId);
    }
@@ -118,6 +127,18 @@ export class MediaDataServiceService {
 
    getApiPicturesByEpisodesId(episodeId: number): Observable<Picture[]> {
     return this.http.get<Picture[]>('http://localhost:5203/api/pictures/' + episodeId);
+   }
+
+   postApiHeaders(header: Header): Observable<Header> {
+    return this.http.post<Header>('http://localhost:5203/api/headers', header);
+   }
+
+   postApiEpisodes(episodes: Episode[]): Observable<Episode> {
+    return this.http.post<Episode>('http://localhost:5203/api/episodes', episodes);
+   }
+
+   postApiPictures(pictures: Picture[]): Observable<Picture> {
+    return this.http.post<Picture>('http://localhost:5203/api/pictures', pictures);
    }
 
    getFakeApiHeader(): Observable<Header> {

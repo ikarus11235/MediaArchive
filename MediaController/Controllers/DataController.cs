@@ -10,6 +10,8 @@ namespace MediaController.Controllers
     [Route("api")]
     public class DataController : ControllerBase
     {
+        public readonly string _imageFolderPath = "personal/images";
+        public readonly string _videoFolderPath = "personal/videos";
         private readonly IDbContextFactory<ApplicationDbContext> _dbContextFactory;
 
         public DataController(IDbContextFactory<ApplicationDbContext> dbContextFactory)
@@ -106,13 +108,29 @@ namespace MediaController.Controllers
             return Ok(headerDtos);
         }
 
+        [HttpPost("headers")]
+        public async Task<ActionResult<HeaderDto>> CreateHeader([FromBody] HeaderDto headerDto)
+        {
+            var dbContext = _dbContextFactory.CreateDbContext();
+            var header = new Header()
+            {
+                Title = headerDto.Title,
+                ThumbNailPath = $"{_imageFolderPath}/{headerDto.ThumbNailPath}",
+            };
+
+            dbContext.Add(header);
+            await dbContext.SaveChangesAsync();
+
+            return Ok(header);
+        }
+
 
 
         [HttpGet("seasons/{headerId}")]
         public ActionResult<IEnumerable<SeasonDto>> GetSeasons(int headerId)
         {
             var dbContext = _dbContextFactory.CreateDbContext();
-            var seasons = dbContext.Set<Season>().AsNoTracking().Where(q => q.HeaderId == headerId).ToList();
+            var seasons = dbContext.Set<Season>().AsNoTracking().Include(s => s.Episodes).Where(q => q.HeaderId == headerId).ToList();
             if (!seasons.Any())
             {
                 return NotFound();
@@ -125,14 +143,48 @@ namespace MediaController.Controllers
                     Id = season.Id,
                     Title = season.Title,
                     Number = season.Id,
-                    HeaderId = season.HeaderId
+                    HeaderId = season.HeaderId,
+                    Episodes = season.Episodes.Select(e => new EpisodeDto
+                    {
+                        Id = e.Id,
+                        SeasonId = e.SeasonId,
+                        Title = e.Title,
+                        Description = e.Description,
+                        EpisodeSign = e.EpisodeSign,
+                        VideoPath = e.VideoPath
+                    }).ToList()
                 });
             }
 
             return Ok(seasonDtos);
         }
 
+        [HttpPost("seasons")]
+        public async Task<ActionResult<SeasonDto>> CreateSeason([FromBody] SeasonDto seasonDto)
+        {
+            await using var dbContext = _dbContextFactory.CreateDbContext();
+            var header = dbContext.Set<Header>().AsNoTracking().Where(q => q.Id == seasonDto.HeaderId).ToList();
+            if (!header.Any())
+            {
+                return NotFound();
+            }
 
+            Season season = new()
+            {
+                Title = seasonDto.Title,
+                HeaderId = seasonDto.HeaderId,
+                Episodes = seasonDto.Episodes.Select(e => new Episode
+                {
+                    Title = e.Title,
+                    Description = e.Description,
+                    EpisodeSign = e.EpisodeSign,
+                    VideoPath = $"{_videoFolderPath}/{e.VideoPath}",
+                }).ToList()
+            };
+            dbContext.Add(season);
+            await dbContext.SaveChangesAsync();
+            return Ok();
+        }
 
         [HttpGet("episodes/{seasonId}")]
         public ActionResult<IEnumerable<EpisodeDto>> GetEpisodes(int seasonId)
@@ -143,18 +195,46 @@ namespace MediaController.Controllers
             {
                 return NotFound();
             }
-            var episodeDtos = new List<EpisodeDto>();
+            var episodeDtos = new List<Episode>();
             foreach (var episode in episodes)
             {
-                episodeDtos.Add(new EpisodeDto
+                episodeDtos.Add(new Episode
                 {
                     Id = episode.Id,
                     Title = episode.Title,
-                    EpisodeId = episode.SeasonId,
+                    SeasonId = episode.SeasonId,
+                    Description = episode.Description,
+                    EpisodeSign = episode.EpisodeSign,
+                    VideoPath = episode.VideoPath,
                 });
             }
 
             return Ok(episodeDtos);
+        }
+
+        [HttpPost("episodes")]
+        public ActionResult<IEnumerable<EpisodeDto>> PostEpisodes(EpisodeDto[] episodeDtos)
+        {
+            var dbContext = _dbContextFactory.CreateDbContext();
+            var episodes = dbContext.Set<Episode>().AsNoTracking().Where(q => q.SeasonId == episodeDtos[0].SeasonId).ToList();
+            if (!episodes.Any())
+            {
+                return NotFound();
+            }
+            foreach (var episode in episodeDtos)
+            {
+                dbContext.Add(new Episode
+                {
+                    //Id = episode.Id,
+                    Title = episode.Title,
+                    SeasonId = episode.SeasonId,
+                    Description = episode.Description,
+                    EpisodeSign = episode.EpisodeSign,
+                    VideoPath = episode.VideoPath,
+                });
+            }
+            dbContext.SaveChanges();
+            return Ok(episodes);
         }
 
         [HttpGet("singleEpisodes/{episodeId}")]
@@ -168,6 +248,29 @@ namespace MediaController.Controllers
             }
 
             return Ok(episode);
+        }
+
+        [HttpPost("singleEpisode/{episodeId}")]
+        public ActionResult<IEnumerable<EpisodeDto>> PostEpisode(EpisodeDto episodeDtos)
+        {
+            var dbContext = _dbContextFactory.CreateDbContext();
+            var season = dbContext.Set<Season>().AsNoTracking().Where(q => q.Id == episodeDtos.SeasonId).ToList();
+            if (!season.Any())
+            {
+                return NotFound();
+            }
+            
+            dbContext.Add(new Episode
+            {
+                Id = episodeDtos.Id,
+                Title = episodeDtos.Title,
+                SeasonId = episodeDtos.SeasonId,
+                Description = episodeDtos.Description,
+                EpisodeSign = episodeDtos.EpisodeSign,
+                VideoPath = episodeDtos.VideoPath,
+            });
+            dbContext.SaveChanges();
+            return Ok(season);
         }
 
         [HttpGet("pictures/{episodeId}")]
@@ -186,12 +289,34 @@ namespace MediaController.Controllers
                 pictureDtos.Add(new PictureDto
                 {
                     Id = picture.Id,
-                    EpisodeId = picture.EpisodeId,
-                    Url = picture.ImagePath
+                    Episode = picture.EpisodeId,
+                    ImagePath = picture.ImagePath
                 });
             }
 
             return Ok(pictures);
+        }
+
+        [HttpPost("pictures")]
+        public ActionResult<IEnumerable<PictureDto>> PostEpisodes([FromBody] PictureDto[] pictureDtos)
+        {
+            var dbContext = _dbContextFactory.CreateDbContext();
+            var episode = dbContext.Set<Episode>().AsNoTracking().Where(q => q.Id == pictureDtos[0].Episode).ToList();
+            if (!episode.Any())
+            {
+                return NotFound();
+            }
+            foreach (var picture in pictureDtos)
+            {
+                dbContext.Add(new Picture
+                {
+                    //Id = picture.Id,
+                    EpisodeId = picture.Episode,
+                    ImagePath = $"{_imageFolderPath}/{picture.ImagePath}",
+                });
+            }
+            dbContext.SaveChanges();
+            return Ok(episode);
         }
 
         [HttpGet("pictures")]
@@ -202,8 +327,8 @@ namespace MediaController.Controllers
             new PictureDto
             {
                 Id = 1,
-                EpisodeId = 1,
-                Url = "https://example.com/pilot.jpg"
+                Episode = 1,
+                ImagePath = "https://example.com/pilot.jpg"
             }
         });
         }

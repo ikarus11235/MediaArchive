@@ -44,11 +44,38 @@ closeDialog() {
 
 createHeader(event: { title: string; thumbNailPath: string }) {
 
-  console.log(event.title);
-  console.log(event.thumbNailPath);
+  const newHeader: Header = {
+    id: 0,
+    title: event.title,
+    thumbNailPath: event.thumbNailPath,
+    logo: ''
+  };
+
+
+  console.log(newHeader);
+
+  this.mediaService.postApiHeaders(newHeader).subscribe({
+    next: (createdHeader) => {
+      console.log('Header erstellt', createdHeader);
+
+      // Liste neu laden
+      this.getHeader();
+
+      this.closeDialog();
+    },
+    error: (err) => {
+      console.error(err);
+    }
+  });
+
 
   // später:
   // this.mediaService.createHeader(event).subscribe(...);
+
+  // let header = new Headers( {
+  //   title = event.headerTitle,
+  //   thumbNailPath = event.thumbNailPath,
+  // });
 
   this.closeDialog();
 }
