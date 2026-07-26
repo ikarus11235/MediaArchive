@@ -35,7 +35,7 @@ export class ShowSeasonsComponent implements OnInit{
       this.displayedSeasons = seasons;
       console.log(this.displayedSeasons);
       if (this.displayedSeasons.length != 0 && this.displayedSeasons[0].episodes != null) {
-      this.displayedEpisodes = this.displayedSeasons[0].episodes;
+        this.displayedEpisodes = this.displayedSeasons[0].episodes;
       }
     });
 

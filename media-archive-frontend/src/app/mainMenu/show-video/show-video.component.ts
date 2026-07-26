@@ -38,7 +38,11 @@ export class ShowVideoComponent implements OnInit {
   }
 
   navigateToSeasons(id: number){
-    this.router.navigate(['/season', id]);
+    this.mediaService.getApiHeaderBySeasonId(id).subscribe(header => {
+      this.router.navigate(['/season', header.id]);
+      console.log('Back to header ', header);
+    });
+
   }
 
   navigateToGallery(id: number){

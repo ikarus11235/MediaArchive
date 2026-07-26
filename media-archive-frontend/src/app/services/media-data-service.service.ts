@@ -109,6 +109,10 @@ export class MediaDataServiceService {
     return this.http.get<Header[]>('http://localhost:5203/api/headers');
    }
 
+   getApiHeaderBySeasonId(seasonId: number): Observable<Header> {
+    return this.http.get<Header>('http://localhost:5203/api/header/episodes/' + seasonId);
+   }
+
    getApiSeason(headerId: number): Observable<Season[]> {
     return this.http.get<Season[]>('http://localhost:5203/api/seasons/' + headerId);
    }

@@ -212,6 +212,25 @@ namespace MediaController.Controllers
             return Ok(episodeDtos);
         }
 
+        [HttpGet("header/episodes/{seasonId}")]
+        public ActionResult<HeaderDto> GetHeaderIdBySeason(int seasonId) 
+        {
+            var dbContext = _dbContextFactory.CreateDbContext();
+            var season = dbContext.Set<Season>().AsNoTracking().Where(q => q.Id == seasonId).FirstOrDefault();
+            if (season == null)
+            {
+                return NotFound();
+            }
+            var headerDto = new HeaderDto
+            {
+                Id = season.HeaderId,
+                Title = season.Title,
+                ThumbNailPath = "",
+                Logo = ""
+            };
+            return Ok(headerDto);
+        }
+
         [HttpPost("episodes")]
         public ActionResult<IEnumerable<EpisodeDto>> PostEpisodes(EpisodeDto[] episodeDtos)
         {
