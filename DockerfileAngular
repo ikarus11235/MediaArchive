@@ -1,0 +1,32 @@
+# ==========================================
+# Stage 1: Angular Build
+# ==========================================
+FROM node:20-alpine AS build
+
+WORKDIR /app
+
+# Package-Dateien kopieren
+COPY media-archive-frontend/package*.json ./
+
+RUN npm install
+
+# Restliche Anwendung kopieren
+COPY media-archive-frontend .
+
+# Angular bauen
+RUN npm run build
+
+# ==========================================
+# Stage 2: NGINX
+# ==========================================
+FROM nginx:alpine
+
+# Build kopieren
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# public-Verzeichnis anlegen
+RUN mkdir -p /usr/share/nginx/html/public
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

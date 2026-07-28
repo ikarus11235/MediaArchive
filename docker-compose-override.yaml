@@ -7,3 +7,9 @@ services:
       args:
         DOTNET_VERSION: "8.0"
         PROJECT_PATH: "MediaController/MediaController.csproj"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: DockerfileAngular
+    image: mediaarchive-angular  
