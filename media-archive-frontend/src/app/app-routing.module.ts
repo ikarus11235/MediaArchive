@@ -21,6 +21,10 @@ const routes: Routes = [
   {
     path: 'gallery/:id',
     component: ShowGalleryComponent
+  },
+  {
+    path: '',
+    redirectTo: '/headers'
   }
 ];
 
