@@ -1,6 +1,7 @@
 ﻿using Common.Database;
 using Common.Database.Model;
 using MediaController.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -85,6 +86,7 @@ namespace MediaController.Controllers
         #endregion
 
         #region Headers
+        [Authorize]
         [HttpGet("headers")]
         public ActionResult<IEnumerable<HeaderDto>> GetHeaders()
         {

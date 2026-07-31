@@ -1,7 +1,10 @@
-
 using Common.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Common.Services;
 
 namespace MediaController
 {
@@ -53,6 +56,23 @@ namespace MediaController
                 });
             });
 
+            builder.Services.AddScoped<JwtService>();
+
+            var key = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]);
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>    
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                        ValidAudience = builder.Configuration["Jwt:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(key)
+                    };
+                });
 
             var app = builder.Build();
 
@@ -78,6 +98,9 @@ namespace MediaController
             app.UseAuthorization();
 
             app.MapControllers();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.Run();
         }
