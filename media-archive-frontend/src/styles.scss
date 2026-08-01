@@ -1,1 +1,31 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* globale Styles */
+:root {
+  --primary-bg: #0a0185;
+  --header-bg: #070069;
+  --accent: #a70000;
+  --text: #ffffff;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  background-color: var(--primary-bg);
+  color: var(--text);
+  font-family: "Verdana", "Geneva", "Tahoma", sans-serif;
+  box-sizing: border-box;
+}
+
+/* Utility button */
+.btn {
+  background-color: var(--accent);
+  border: none;
+  color: var(--text);
+  padding: 12px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+}

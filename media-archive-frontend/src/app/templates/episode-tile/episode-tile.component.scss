@@ -1,9 +1,7 @@
 .verticalPace{
     display: flex;
     flex-direction: row;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    background-color: #0a0185;
-    color: white;
+    color: var(--text);
 }
 
 .verticalPace h3{

@@ -1,6 +1,8 @@
-﻿using Common.Database.Model;
+﻿using Common.Database;
+using Common.Database.Model;
 using Common.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace MediaController.Controllers
 {
@@ -9,10 +11,12 @@ namespace MediaController.Controllers
     public class AuthController : ControllerBase
     {
         private readonly JwtService _jwtService;
+        private readonly IDbContextFactory<ApplicationDbContext> _dbContextFactory;
 
-        public AuthController(JwtService jwtService) 
+        public AuthController(JwtService jwtService, IDbContextFactory<ApplicationDbContext> dbContextFactory) 
         {
             _jwtService = jwtService;
+            _dbContextFactory = dbContextFactory;
         }
 
         [HttpPost("login")]
