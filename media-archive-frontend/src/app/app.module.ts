@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ShowHeadersComponent } from './mainMenu/show-headers/show-headers.component';
 import { RouterOutlet } from '@angular/router';
-import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HeaderTileComponent } from './templates/header-tile/header-tile.component';
 import { ShowSeasonsComponent } from './mainMenu/show-seasons/show-seasons.component';
 import { EpisodeTileComponent } from './templates/episode-tile/episode-tile.component';
@@ -44,7 +44,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     useClass: AuthInterceptor,
     multi: true
     },
-  provideHttpClient()],
+  provideHttpClient(withInterceptorsFromDi())],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

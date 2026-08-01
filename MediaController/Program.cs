@@ -95,12 +95,10 @@ namespace MediaController
 
             app.UseCors("AllowAngular");
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
-
-            app.UseAuthentication();
-            app.UseAuthorization();
 
             app.Run();
         }
