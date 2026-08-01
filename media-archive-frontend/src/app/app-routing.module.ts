@@ -4,6 +4,7 @@ import { ShowHeadersComponent } from './mainMenu/show-headers/show-headers.compo
 import { ShowSeasonsComponent } from './mainMenu/show-seasons/show-seasons.component';
 import { ShowVideoComponent } from './mainMenu/show-video/show-video.component';
 import { ShowGalleryComponent } from './mainMenu/show-gallery/show-gallery.component';
+import { LoginComponent } from './login/login/login.component';
 
 const routes: Routes = [
   {
@@ -23,9 +24,13 @@ const routes: Routes = [
     component: ShowGalleryComponent
   },
   {
-    path: '',
-    redirectTo: '/headers'
+    path: 'login',
+    component: LoginComponent
   }
+  // {
+  //   path: '',
+  //   redirectTo: 'headers'
+  // }
 ];
 
 @NgModule({

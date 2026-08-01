@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ShowHeadersComponent } from './mainMenu/show-headers/show-headers.component';
 import { RouterOutlet } from '@angular/router';
-import { provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
 import { HeaderTileComponent } from './templates/header-tile/header-tile.component';
 import { ShowSeasonsComponent } from './mainMenu/show-seasons/show-seasons.component';
 import { EpisodeTileComponent } from './templates/episode-tile/episode-tile.component';
@@ -15,6 +15,8 @@ import { HeaderDialogComponentComponent } from './templates/header-dialog-compon
 import { FormsModule } from '@angular/forms';
 import { SeasonDialogComponent } from './templates/season-dialog/season-dialog.component';
 import { EpisodeImagesDialogComponent } from './templates/episode-images-dialog/episode-images-dialog.component';
+import { LoginComponent } from './login/login/login.component';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,8 @@ import { EpisodeImagesDialogComponent } from './templates/episode-images-dialog/
     ShowGalleryComponent,
     HeaderDialogComponentComponent,
     SeasonDialogComponent,
-    EpisodeImagesDialogComponent
+    EpisodeImagesDialogComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -35,7 +38,13 @@ import { EpisodeImagesDialogComponent } from './templates/episode-images-dialog/
     RouterOutlet,
     FormsModule
   ],
-  providers: [provideHttpClient()],
+  providers: [
+    {
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true
+    },
+  provideHttpClient()],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

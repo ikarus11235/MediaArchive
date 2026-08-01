@@ -11,8 +11,8 @@ namespace MediaController.Controllers
     [Route("api")]
     public class DataController : ControllerBase
     {
-        public readonly string _imageFolderPath = "personal/images";
-        public readonly string _videoFolderPath = "personal/videos";
+        private readonly string _imageFolderPath = "personal/images";
+        private readonly string _videoFolderPath = "personal/videos";
         private readonly IDbContextFactory<ApplicationDbContext> _dbContextFactory;
 
         public DataController(IDbContextFactory<ApplicationDbContext> dbContextFactory)
