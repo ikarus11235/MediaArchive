@@ -22,6 +22,7 @@ namespace MediaController.Controllers
 
         #region Fake Messages
 
+        [Authorize]
         [HttpGet("fakeHeaders")]
         public ActionResult<IEnumerable<HeaderDto>> GetFakeHeaders()
         {
@@ -33,6 +34,7 @@ namespace MediaController.Controllers
             return Ok(headers);
         }
 
+        [Authorize]
         [HttpGet("fakeSeasons/{headerId}")]
         public ActionResult<IEnumerable<SeasonDto>> GetFakeSeasons(int headerId)
         {
@@ -56,6 +58,7 @@ namespace MediaController.Controllers
             return Ok(result);
         }
 
+        [Authorize]
         [HttpGet("fakeEpisodes/{seasonId}")]
         public ActionResult<IEnumerable<EpisodeDto>> GetFakeEpisodes(int seasonId)
         {
@@ -111,6 +114,7 @@ namespace MediaController.Controllers
             return Ok(headerDtos);
         }
 
+        [Authorize]
         [HttpPost("headers")]
         public async Task<ActionResult<HeaderDto>> CreateHeader([FromBody] HeaderDto headerDto)
         {
@@ -127,6 +131,7 @@ namespace MediaController.Controllers
             return Ok(header);
         }
 
+        [Authorize]
         [HttpGet("header/episodes/{seasonId}")]
         public ActionResult<HeaderDto> GetHeaderIdBySeason(int seasonId)
         {
@@ -148,6 +153,7 @@ namespace MediaController.Controllers
         #endregion
 
         #region Season
+        [Authorize]
         [HttpGet("seasons/{headerId}")]
         public ActionResult<IEnumerable<SeasonDto>> GetSeasons(int headerId)
         {
@@ -181,6 +187,7 @@ namespace MediaController.Controllers
             return Ok(seasonDtos);
         }
 
+        [Authorize]
         [HttpPost("seasons")]
         public async Task<ActionResult<SeasonDto>> CreateSeason([FromBody] SeasonDto seasonDto)
         {
@@ -210,6 +217,7 @@ namespace MediaController.Controllers
         #endregion
 
         #region Episodes
+        [Authorize]
         [HttpGet("episodes/{seasonId}")]
         public ActionResult<IEnumerable<EpisodeDto>> GetEpisodes(int seasonId)
         {
@@ -238,6 +246,7 @@ namespace MediaController.Controllers
 
         
 
+        [Authorize]
         [HttpPost("episodes")]
         public ActionResult<IEnumerable<EpisodeDto>> PostEpisodes(EpisodeDto[] episodeDtos)
         {
@@ -263,6 +272,7 @@ namespace MediaController.Controllers
             return Ok(episodes);
         }
 
+        [Authorize]
         [HttpGet("singleEpisodes/{episodeId}")]
         public ActionResult<IEnumerable<EpisodeDto>> GetEpisodeById(int episodeId)
         {
@@ -276,6 +286,7 @@ namespace MediaController.Controllers
             return Ok(episode);
         }
 
+        [Authorize]
         [HttpPost("singleEpisode/{episodeId}")]
         public ActionResult<IEnumerable<EpisodeDto>> PostEpisode(EpisodeDto episodeDtos)
         {
@@ -301,6 +312,7 @@ namespace MediaController.Controllers
         #endregion
 
         #region Pictures
+        [Authorize]
         [HttpGet("pictures/{episodeId}")]
         public ActionResult<IEnumerable<PictureDto>> GetPictureBySeasonId(int episodeId) 
         {
@@ -325,6 +337,7 @@ namespace MediaController.Controllers
             return Ok(pictures);
         }
 
+        [Authorize]
         [HttpPost("pictures")]
         public ActionResult<IEnumerable<PictureDto>> PostEpisodes([FromBody] PictureDto[] pictureDtos)
         {
@@ -347,6 +360,7 @@ namespace MediaController.Controllers
             return Ok(episode);
         }
 
+        [Authorize]
         [HttpGet("pictures")]
         public ActionResult<IEnumerable<PictureDto>> GetPictures()
         {
@@ -361,6 +375,7 @@ namespace MediaController.Controllers
         });
         }
 
+        [Authorize]
         [HttpGet("tags")]
         public ActionResult<IEnumerable<TagDto>> GetTags()
         {

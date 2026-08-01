@@ -26,11 +26,12 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent
+  },
+  {
+    path: '',
+    redirectTo: '/headers',
+    pathMatch: 'full'
   }
-  // {
-  //   path: '',
-  //   redirectTo: 'headers'
-  // }
 ];
 
 @NgModule({
