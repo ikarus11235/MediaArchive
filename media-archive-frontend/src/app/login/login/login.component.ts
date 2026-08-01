@@ -1,5 +1,6 @@
-import { Component, Output, EventEmitter, Input } from '@angular/core';
+import { Component, Output, EventEmitter, Input, inject } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +17,8 @@ export class LoginComponent {
     password: ""
   };
 
+  private readonly router = inject(Router);
+
   constructor(private authService: AuthService) {}
 
   login() {
@@ -23,6 +26,7 @@ export class LoginComponent {
       next: (res) => {
         this.authService.saveToken(res.token);
         this.message = "Login successful";
+        return this.router.navigate(['/headers']);
       },
       error: () => {
         this.message = "Invalid email or password";
