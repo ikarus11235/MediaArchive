@@ -56,11 +56,17 @@ namespace Common.Database
                 .WithMany(t => t.Pictures)
                 .UsingEntity(j => j.ToTable("PictureTags"));
 
+            modelBuilder.Entity<User>().Property(q => q.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<User>().HasKey(q => q.Id);
+            modelBuilder.Entity<User>().HasIndex(q => q.Email).IsUnique();
+            modelBuilder.Entity<User>().Property(q => q.Role).HasConversion<string>();
+
 
             modelBuilder.Entity<Header>().HasData(SeedingHeaders.SeedHeaders());
             modelBuilder.Entity<Season>().HasData(SeedingSeasons.SeedSeason());
             modelBuilder.Entity<Episode>().HasData(SeedingEpisodes.SeedEpisodes());
             modelBuilder.Entity<Picture>().HasData(SeedingPictures.SeedPictures());
+            modelBuilder.Entity<User>().HasData(SeedingUsers.SeedUsers());
         }
     }
 

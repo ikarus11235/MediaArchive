@@ -22,7 +22,9 @@ namespace MediaController.Controllers
         [HttpPost("login")]
         public ActionResult Login(User user)
         {
-            if (user.Email == "admin@test.com" && user.Password == "123456")
+            using var dbContext = _dbContextFactory.CreateDbContext();
+            var foundUser = dbContext.Set<User>().AsNoTracking().Where(q => q.Email == user.Email).FirstOrDefault();
+            if (foundUser != null && foundUser.Password == user.Password) 
             {
                 var token = _jwtService.GenerateToken(user.Email);
                 return Ok(new { Token = token });

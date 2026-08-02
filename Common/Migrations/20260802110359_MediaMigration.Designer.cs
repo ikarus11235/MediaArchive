@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Common.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260717150314_MediaMigration")]
+    [Migration("20260802110359_MediaMigration")]
     partial class MediaMigration
     {
         /// <inheritdoc />
@@ -246,6 +246,50 @@ namespace Common.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Tag");
+                });
+
+            modelBuilder.Entity("Common.Database.Model.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.ToTable("User");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = -1,
+                            Email = "admin@archive.com",
+                            Password = "1234",
+                            Role = "Admin"
+                        },
+                        new
+                        {
+                            Id = -2,
+                            Email = "dummy@archive.com",
+                            Password = "dummy",
+                            Role = "User"
+                        });
                 });
 
             modelBuilder.Entity("EpisodeTag", b =>

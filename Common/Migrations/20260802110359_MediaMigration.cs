@@ -43,6 +43,21 @@ namespace Common.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "User",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Season",
                 columns: table => new
                 {
@@ -159,6 +174,15 @@ namespace Common.Migrations
                 values: new object[] { 1, null, "default/images/closeup-open-textbook.jpg", "Show Title" });
 
             migrationBuilder.InsertData(
+                table: "User",
+                columns: new[] { "Id", "Email", "Password", "Role" },
+                values: new object[,]
+                {
+                    { -2, "dummy@archive.com", "dummy", "User" },
+                    { -1, "admin@archive.com", "1234", "Admin" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Season",
                 columns: new[] { "Id", "HeaderId", "Title" },
                 values: new object[,]
@@ -216,6 +240,12 @@ namespace Common.Migrations
                 name: "IX_Season_HeaderId",
                 table: "Season",
                 column: "HeaderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_Email",
+                table: "User",
+                column: "Email",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -226,6 +256,9 @@ namespace Common.Migrations
 
             migrationBuilder.DropTable(
                 name: "PictureTags");
+
+            migrationBuilder.DropTable(
+                name: "User");
 
             migrationBuilder.DropTable(
                 name: "Picture");
