@@ -1,28 +1,56 @@
-# This workflow will build a .NET project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 
-name: .NET
+name: Build .NET
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+trigger:
+- main
 
-jobs:
-  build:
 
-    runs-on: ubuntu-latest
+variables:
+- name: 'SolutionName'
+  value: 'MediaArchive'
+- name: 'Build.Configuration'
+  value: 'Release'
+
+
+stages:
+- stage: Build
+
+  jobs:
+  - job: Backend
+    pool: 
+      vmImage: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+    - checkout: self
+  
+    - task: NuGetAuthenticate@1
+  
+    - task: NuGetToolInstaller@1
+      inputs:
+        versionSpec: 6.0
+
+    - task: UseDotNet@2
+      displayName: 'Install .NET 8 SDK'
+      inputs:
+        packageType: 'sdk'
+        version: '8.0.x'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Build Target ($(SolutionName))'
+      inputs:
+        command: build
+        projects: '$(SolutionName)/$(SolutionName).sln'
+        arguments: '--configuration $(Build.Configuration)'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Run All tests'
+      inputs:
+        command: 'test'
+        projects: '$(SolutionName)/**/*[Tt]est*/*.csproj'
+        publishTestResults: false
+        arguments: '--configuration $(BuildConfiguration)'
+
+    - script: |
+        docker --version
+        docker image ls
+        docker container ls
