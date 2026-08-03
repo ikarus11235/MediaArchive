@@ -2,38 +2,25 @@
 
   <div class="dialog">
 
-    <h2>Neue Bilder</h2>
-
-    <label>Bilder</label>
-
-    <input
-      #fileInput
-      type="file"
-      hidden
-      multiple
-      accept=".jpg,.jpeg,.png"
-      (change)="onFilesSelected($event)">
-
-    <button (click)="fileInput.click()">
-      Bilder auswählen
-    </button>
-
-    <div *ngIf="selectedFiles.length">
-
-      <div *ngFor="let file of selectedFiles">
-        {{ file.name }}
-      </div>
-
+    <h2>Episodenbilder hochladen</h2>
+    
+    <div class="form-group">
+      <label for="file-input">Dateien wählen:</label>
+      <input 
+        type="file" 
+        id="file-input"
+        multiple
+        accept="image/*"
+        (change)="onFilesSelected($event)"
+        class="file-input">
+      <p class="file-info" *ngIf="selectedFiles.length > 0">
+        {{ selectedFiles.length }} Datei(en) ausgewählt
+      </p>
     </div>
 
-    <div class="buttons">
-      <button (click)="cancel.emit()">
-        Abbrechen
-      </button>
-
-      <button (click)="onSave()">
-        Speichern
-      </button>
+    <div class="button-group">
+      <button type="button" class="btn btn-secondary" (click)="cancel.emit()">Abbrechen</button>
+      <button type="button" class="btn btn-primary" (click)="onSave()">Speichern</button>
     </div>
 
   </div>

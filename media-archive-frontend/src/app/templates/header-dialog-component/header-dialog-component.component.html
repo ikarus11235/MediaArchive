@@ -2,38 +2,38 @@
 
     <div class="dialog">
 
-        <h2>Neuen Header anlegen</h2>
+        <h2>Serie erstellen</h2>
+        
+        <form (ngSubmit)="onSave()">
+            <div class="form-group">
+                <label for="title">Seriename:</label>
+                <input 
+                    type="text" 
+                    id="title"
+                    [(ngModel)]="title" 
+                    name="title"
+                    placeholder="z.B. Breaking Bad"
+                    required>
+            </div>
 
-        <label>Titel</label>
-        <input
-            type="text"
-            [(ngModel)]="title">
+            <div class="form-group">
+                <label for="thumbnail">Thumbnail hochladen:</label>
+                <input 
+                    type="file" 
+                    id="thumbnail"
+                    accept="image/*"
+                    (change)="onFileSelected($event)"
+                    class="file-input">
+                <p class="file-info" *ngIf="selectedFile">
+                    {{ selectedFile.name }}
+                </p>
+            </div>
 
-        <label>Thumbnail</label>
-        <input
-            #fileInput
-            type="file"
-            accept="image/*"
-            hidden
-            (change)="onFileSelected($event)">
-
-<button (click)="fileInput.click()">
-    Thumbnail auswählen
-</button>
-
-<div *ngIf="selectedFile">
-    {{ selectedFile.name }}
-</div>
-
-        <div class="buttons">
-            <button (click)="cancel.emit()">
-                Abbrechen
-            </button>
-
-            <button (click)="onSave()">
-                Speichern
-            </button>
-        </div>
+            <div class="button-group">
+                <button type="button" class="btn btn-secondary" (click)="cancel.emit()">Abbrechen</button>
+                <button type="submit" class="btn btn-primary">Speichern</button>
+            </div>
+        </form>
 
     </div>
 
