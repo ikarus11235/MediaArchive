@@ -3,6 +3,14 @@
   //max-width: 200px; /* Maximum width */
   margin: 0 auto; /* Center it */
   /* font-family removed — now global */
+  overflow: hidden;
+  border: 1px solid transparent;
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.container:hover {
+  border-color: rgba(167, 0, 0, 0.8);
+  box-shadow: 0 0 24px 8px rgba(167, 0, 0, 0.35);
 }
 
 .container .content {
