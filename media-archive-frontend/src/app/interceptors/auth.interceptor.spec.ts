@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpInterceptorFn } from '@angular/common/http';
+import { describe, beforeEach, it, expect } from 'vitest';
 
 import { authInterceptor } from './auth.interceptor';
 
