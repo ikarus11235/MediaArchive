@@ -1,17 +1,75 @@
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { describe, beforeEach, it, expect } from 'vitest';
+import { beforeEach, describe, expect, it, afterEach } from 'vitest';
 
+import { Header } from '../interface/header';
 import { MediaDataServiceService } from './media-data-service.service';
 
 describe('MediaDataServiceService', () => {
   let service: MediaDataServiceService;
+  let httpMock: HttpTestingController;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule]
+    });
+
     service = TestBed.inject(MediaDataServiceService);
+    httpMock = TestBed.inject(HttpTestingController);
+  });
+
+  afterEach(() => {
+    httpMock.verify();
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  it('returns test headers from getTestHeader', () => {
+    const result = service.getTestHeader();
+
+    expect(result).toHaveLength(3);
+    expect(result[0].title).toBe('TestTitle');
+  });
+
+  it('fetches headers from the API', () => {
+    const mockHeaders: Header[] = [{
+      id: 1,
+      title: 'Header 1',
+      thumbNailPath: 'images/a.jpg',
+      logo: 'logo.png'
+    }];
+
+    let result: Header[] | undefined;
+    service.getApiHeader().subscribe((headers) => {
+      result = headers;
+    });
+
+    const req = httpMock.expectOne('http://localhost:5203/api/headers');
+    expect(req.request.method).toBe('GET');
+    req.flush(mockHeaders);
+
+    expect(result).toEqual(mockHeaders);
+  });
+
+  it('posts a season to the API', () => {
+    const season = {
+      id: 1,
+      headerId: 2,
+      title: 'Season 1',
+      episodes: null
+    };
+
+    let result: unknown;
+    service.postApiSeason(season).subscribe((response) => {
+      result = response;
+    });
+
+    const req = httpMock.expectOne('http://localhost:5203/api/seasons');
+    expect(req.request.method).toBe('POST');
+    req.flush({ ok: true });
+
+    expect(result).toEqual({ ok: true });
   });
 });
