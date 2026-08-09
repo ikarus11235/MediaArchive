@@ -32,4 +32,16 @@ jobs:
         if: startsWith(github.ref, 'refs/heads/main')
         run: |
           dotnet publish MediaController/MediaController.csproj -c Release -o ./out/mediacontroller
+
+      - name: Create archive
+        if: startsWith(github.ref, 'refs/heads/main')
+        run: |
+          mkdir -p ./out/archive
+          tar -czvf ./out/archive/mediacontroller.tar.gz -C ./out/mediacontroller .
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mediacontroller
+          path: ./out/archive/mediacontroller.tar.gz
       
