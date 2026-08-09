@@ -59,8 +59,14 @@ jobs:
       - name: Install dependencies and build frontend
         run: |
           cd media-archive-frontend
+          rm -rf node_modules package-lock.json
           npm install
           npm run build
+
+      # - name: Test frontend
+      #   run: |
+      #     cd media-archive-frontend
+      #     npm run test --no-watch
 
       - name: Upload frontend artifact
         uses: actions/upload-artifact@v4
