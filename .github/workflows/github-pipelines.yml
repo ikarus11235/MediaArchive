@@ -73,4 +73,31 @@ jobs:
         with:
           name: frontend-build
           path: ./media-archive-frontend/dist
+
+  docker:
+    runs-on: ubuntu-22.04
+    needs: [build-dotnet, build-frontend]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
       
+      - name: Build dotnet image
+        run: docker compose -f docker-compose.build.yml build mediacontroller
+
+      - name: Build frontend image
+        run: docker compose -f docker-compose.build.yml build frontend
+
+      - name: Prepare image output directory
+        run: mkdir -p ./out/images
+
+      - name: Save dotnet image
+        run: docker save mediacontroller:latest -o ./out/images/mediacontroller.tar
+
+      - name: Save frontend image
+        run: docker save frontend:latest -o ./out/images/frontend.tar
+
+      - name: Upload docker images artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-images
+          path: ./out/images
