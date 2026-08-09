@@ -27,3 +27,9 @@ jobs:
 
       - name: Test
         run: dotnet test MediaArchive.sln --configuration Release --no-build --verbosity normal
+
+      - name: Publish Artifacts for Release (cache)
+        if: startsWith(github.ref, 'refs/heads/main')
+        run: |
+          dotnet publish MediaController/MediaController.csproj -c Release -o ./out/mediacontroller
+      
