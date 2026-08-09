@@ -94,7 +94,7 @@ jobs:
         run: docker save mediacontroller:latest -o ./out/images/mediacontroller.tar
 
       - name: Save frontend image
-        run: docker save frontend:latest -o ./out/images/frontend.tar
+        run: docker save mediaarchive-angular:latest -o ./out/images/mediaarchive-angular.tar
 
       - name: Upload docker images artifact
         uses: actions/upload-artifact@v4
