@@ -7,8 +7,8 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  build-dotnet:
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout
@@ -44,4 +44,27 @@ jobs:
         with:
           name: mediacontroller
           path: ./out/archive/mediacontroller.tar.gz
+
+  build-frontend:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+
+      - name: Install dependencies and build frontend
+        run: |
+          cd media-archive-frontend
+          npm install
+          npm run build
+
+      - name: Upload frontend artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-build
+          path: ./media-archive-frontend/dist
       
