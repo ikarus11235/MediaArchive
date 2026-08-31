@@ -6,6 +6,15 @@ import { Season } from '../interface/season';
 import { Episode } from '../interface/episode';
 import { Picture } from '../interface/picture';
 
+// TODO: Split service into 4 different services for better separation of concerns and maintainability.
+/**
+ * Services:
+ * 1. HeaderService: Handles operations related to headers.
+ * 2. SeasonService: Manages operations related to seasons.
+ * 3. EpisodeService: Responsible for operations related to episodes.
+ * 4. PictureService: Handles operations related to pictures.
+ */
+
 
 @Injectable({
   providedIn: 'root'

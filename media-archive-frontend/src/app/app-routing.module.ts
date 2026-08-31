@@ -6,6 +6,7 @@ import { ShowVideoComponent } from './mainMenu/show-video/show-video.component';
 import { ShowGalleryComponent } from './mainMenu/show-gallery/show-gallery.component';
 import { LoginComponent } from './login/login/login.component';
 import { authenticationGuardGuard } from './guards/authentication-guard.guard';
+import { ManageHeadersComponent } from './mainMenu/manage-headers/manage-headers.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,11 @@ const routes: Routes = [
   {
     path: 'gallery/:id',
     component: ShowGalleryComponent,
+    canActivate: [authenticationGuardGuard]
+  },
+  {
+    path: 'manage-headers',
+    component: ManageHeadersComponent,
     canActivate: [authenticationGuardGuard]
   },
   {

@@ -17,6 +17,7 @@ import { SeasonDialogComponent } from './templates/season-dialog/season-dialog.c
 import { EpisodeImagesDialogComponent } from './templates/episode-images-dialog/episode-images-dialog.component';
 import { LoginComponent } from './login/login/login.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { ManageHeadersComponent } from './mainMenu/manage-headers/manage-headers.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     HeaderDialogComponentComponent,
     SeasonDialogComponent,
     EpisodeImagesDialogComponent,
-    LoginComponent
+    LoginComponent,
+    ManageHeadersComponent
   ],
   imports: [
     BrowserModule,

@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpRequest, HttpResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { describe, beforeEach, it, expect, vi } from 'vitest';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 import { AuthInterceptor } from './auth.interceptor';
 import { AuthService } from '../services/auth.service';
@@ -10,6 +11,7 @@ describe('AuthInterceptor', () => {
   let interceptor: AuthInterceptor;
   let authServiceMock: { getToken: ReturnType<typeof vi.fn> };
   let nextHandler: { handle: ReturnType<typeof vi.fn> };
+  let routerMock: { navigate: ReturnType<typeof vi.fn> };
 
   beforeEach(() => {
     authServiceMock = {
@@ -19,11 +21,15 @@ describe('AuthInterceptor', () => {
     nextHandler = {
       handle: vi.fn(() => of(new HttpResponse({ status: 200 })))
     };
+    routerMock = {
+      navigate: vi.fn()
+    };
 
     TestBed.configureTestingModule({
       providers: [
         AuthInterceptor,
-        { provide: AuthService, useValue: authServiceMock }
+        { provide: AuthService, useValue: authServiceMock },
+        { provide: Router, useValue: routerMock }
       ]
     });
 
@@ -53,5 +59,17 @@ describe('AuthInterceptor', () => {
     // Assert
     expect(nextHandler.handle).toHaveBeenCalledTimes(1);
     expect(nextHandler.handle.mock.calls[0][0].headers.get('Authorization')).toBeNull();
+  });
+
+  it('routes to login when the request returns 401', () => {
+    nextHandler.handle.mockReturnValue(
+      throwError(() => new HttpErrorResponse({ status: 401 }))
+    );
+
+    interceptor.intercept(new HttpRequest('GET', '/test'), nextHandler as any).subscribe({
+      error: () => undefined
+    });
+
+    expect(routerMock.navigate).toHaveBeenCalledWith(['/login']);
   });
 });

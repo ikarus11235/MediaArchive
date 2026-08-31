@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MediaDataServiceService } from '../../services/media-data-service.service';
 import { Header } from '../../interface/header';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-show-headers',
@@ -11,6 +12,7 @@ import { Header } from '../../interface/header';
 export class ShowHeadersComponent implements OnInit {
 
   displayedHeaders: Header[] | any = null;
+  private router = inject(Router);
 
   constructor(private mediaService: MediaDataServiceService){
     
@@ -40,6 +42,10 @@ openDialog() {
 
 closeDialog() {
   this.showDialog = false;
+}
+
+routeToManageHeaders() {
+  this.router.navigate(['/manage-headers']);
 }
 
 createHeader(event: { title: string; thumbNailPath: string }) {

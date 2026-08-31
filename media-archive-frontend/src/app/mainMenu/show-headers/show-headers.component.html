@@ -2,6 +2,10 @@
     Neuer Header
 </button>
 
+<button class="button" type="button" (click)="routeToManageHeaders()">
+  Verwalten
+</button>
+
 <app-header-dialog-component
     *ngIf="showDialog"
     (cancel)="closeDialog()"
