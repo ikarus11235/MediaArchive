@@ -1,12 +1,102 @@
+:host {
+  display: block;
+  min-height: 100%;
+  background: var(--primary-bg);
+  color: var(--text);
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.manage-headers-panel {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
 .button {
   background-color: var(--accent);
   border: none;
   color: var(--text);
-  padding: 15px 32px;
+  padding: 12px 20px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
-  margin: 4px 2px;
+  font-weight: 600;
+  margin: 0 0 16px;
   cursor: pointer;
+  border-radius: 6px;
+  transition: opacity 0.2s ease;
+}
+
+.button:hover {
+  opacity: 0.9;
+}
+
+mat-tree {
+  background: transparent;
+  color: var(--text);
+}
+
+.mat-tree-node {
+  color: var(--text);
+  min-height: 40px;
+}
+
+.mat-tree-node + .mat-tree-node {
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.tree-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+}
+
+.tree-label {
+  flex: 1;
+  min-width: 0;
+}
+
+.tree-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.mat-tree-node button[matIconButton] {
+  background: var(--accent);
+  color: var(--text);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+}
+
+.mat-tree-node button[matIconButton][disabled] {
+  background: transparent;
+  color: transparent;
+  cursor: default;
+  opacity: 0.6;
+}
+
+.action-button {
+  background: var(--accent) !important;
+  color: var(--text) !important;
+  border-radius: 50% !important;
+}
+
+.action-button mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
+}
+
+.mat-icon {
+  color: var(--text);
 }

@@ -18,6 +18,8 @@ import { EpisodeImagesDialogComponent } from './templates/episode-images-dialog/
 import { LoginComponent } from './login/login/login.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ManageHeadersComponent } from './mainMenu/manage-headers/manage-headers.component';
+import { MatTreeModule } from '@angular/material/tree';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,9 @@ import { ManageHeadersComponent } from './mainMenu/manage-headers/manage-headers
     BrowserModule,
     AppRoutingModule,
     RouterOutlet,
-    FormsModule
+    FormsModule,
+    MatTreeModule,
+    MatIconModule
   ],
   providers: [
     {

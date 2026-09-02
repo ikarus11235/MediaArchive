@@ -1,3 +1,45 @@
-<button class="button" (click)="backToHeaders()">
+
+
+<div class="manage-headers-panel">
+  <button class="button" (click)="backToHeaders()">
     Zurück
-</button>
+  </button>
+
+  <mat-tree #tree [dataSource]="dataSource" [childrenAccessor]="childrenAccessor">
+    <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+      <div class="tree-row">
+        <button matIconButton disabled></button>
+        <span class="tree-label">{{ node.name }}</span>
+
+        <div class="tree-actions">
+          <button matIconButton aria-label="Umbenennen" class="action-button rename-button" type="button" (click)="$event.stopPropagation()">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button matIconButton aria-label="Löschen" class="action-button delete-button" type="button" (click)="$event.stopPropagation()">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </mat-tree-node>
+
+    <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding matTreeNodeToggle>
+      <div class="tree-row">
+        <button matIconButton matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name">
+          <mat-icon class="mat-icon-rtl-mirror">
+            {{ tree.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
+          </mat-icon>
+        </button>
+        <span class="tree-label">{{ node.name }}</span>
+
+        <div class="tree-actions">
+          <button matIconButton aria-label="Umbenennen" class="action-button rename-button" type="button" (click)="$event.stopPropagation()">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button matIconButton aria-label="Löschen" class="action-button delete-button" type="button" (click)="$event.stopPropagation()">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </mat-tree-node>
+  </mat-tree>
+</div>
