@@ -81,7 +81,7 @@ createSeason(event: { title: string; episodes: File[] }) {
       episodeSign: '',
       seasonId: this.selectedSeasonId,
       title: element.name,
-      videoPath: `/personal/videos/${fileName}`
+      videoPath: fileName
     });
   });
 

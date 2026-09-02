@@ -30,8 +30,13 @@ export class ShowVideoComponent implements OnInit {
       return '';
     }
 
-    const normalized = path.replace(/\\/g, '/').trim();
-    return normalized.startsWith('/') ? normalized : `/${normalized}`;
+    const normalized = path.replace(/\\/g, '/').trim().replace(/\/\/+/, '/');
+
+    if (normalized.startsWith('/personal/')) {
+      return normalized.replace(/\/\/+/, '/');
+    }
+
+    return `/${normalized.replace(/^\/+/, '')}`;
   }
 
   ngOnInit(): void {
@@ -83,7 +88,7 @@ saveImages(files: File[]): void {
     const fileName = element.name;
     pictureArray.push({
       id: 0,
-      imagePath: `/personal/images/${fileName}`,
+      imagePath: fileName,
       episode: this.displayedEpisode.id
     });
   });

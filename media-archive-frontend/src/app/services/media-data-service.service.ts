@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Header } from '../interface/header';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Season } from '../interface/season';
 import { Episode } from '../interface/episode';
 import { Picture } from '../interface/picture';
@@ -110,7 +110,12 @@ export class MediaDataServiceService {
   }
 
   getApiHeader(): Observable<Header[]> {
-    return this.http.get<Header[]>(`${this.apiUrl}/headers`);
+    return this.http.get<Header[]>(`${this.apiUrl}/headers`).pipe(
+      map((headers) => headers.map((header) => ({
+        ...header,
+        thumbNailPath: this.normalizeMediaPath(header.thumbNailPath, 'images')
+      })))
+    );
   }
 
   getApiHeaderBySeasonId(seasonId: number): Observable<Header> {
@@ -118,27 +123,63 @@ export class MediaDataServiceService {
   }
 
   getApiSeason(headerId: number): Observable<Season[]> {
-    return this.http.get<Season[]>(`${this.apiUrl}/seasons/${headerId}`);
+    return this.http.get<Season[]>(`${this.apiUrl}/seasons/${headerId}`).pipe(
+      map((seasons) => seasons.map((season) => ({
+        ...season,
+        episodes: season.episodes?.map((episode) => ({
+          ...episode,
+          videoPath: this.normalizeMediaPath(episode.videoPath, 'videos')
+        })) ?? null
+      })))
+    );
   }
 
   postApiSeason(season: Season): Observable<Header> {
-    return this.http.post<Header>(`${this.apiUrl}/seasons`, season);
+    const normalizedSeason = {
+      ...season,
+      episodes: season.episodes?.map((episode) => ({
+        ...episode,
+        videoPath: this.getMediaFileName(episode.videoPath)
+      })) ?? null
+    };
+
+    return this.http.post<Header>(`${this.apiUrl}/seasons`, normalizedSeason);
   }
 
   getApiEpisodes(seasonId: number): Observable<Episode[]> {
-    return this.http.get<Episode[]>(`${this.apiUrl}/episodes/${seasonId}`);
+    return this.http.get<Episode[]>(`${this.apiUrl}/episodes/${seasonId}`).pipe(
+      map((episodes) => episodes.map((episode) => ({
+        ...episode,
+        videoPath: this.normalizeMediaPath(episode.videoPath, 'videos')
+      })))
+    );
   }
 
   getApiEpisodeById(episodeId: number): Observable<Episode> {
-    return this.http.get<Episode>(`${this.apiUrl}/singleEpisodes/${episodeId}`);
+    return this.http.get<Episode>(`${this.apiUrl}/singleEpisodes/${episodeId}`).pipe(
+      map((episode) => ({
+        ...episode,
+        videoPath: this.normalizeMediaPath(episode.videoPath, 'videos')
+      }))
+    );
   }
 
   getApiPicturesByEpisodesId(episodeId: number): Observable<Picture[]> {
-    return this.http.get<Picture[]>(`${this.apiUrl}/pictures/${episodeId}`);
+    return this.http.get<Picture[]>(`${this.apiUrl}/pictures/${episodeId}`).pipe(
+      map((pictures) => pictures.map((picture) => ({
+        ...picture,
+        imagePath: this.normalizeMediaPath(picture.imagePath, 'images')
+      })))
+    );
   }
 
   postApiHeaders(header: Header): Observable<Header> {
-    return this.http.post<Header>(`${this.apiUrl}/headers`, header);
+    const normalizedHeader = {
+      ...header,
+      thumbNailPath: this.getMediaFileName(header.thumbNailPath)
+    };
+
+    return this.http.post<Header>(`${this.apiUrl}/headers`, normalizedHeader);
   }
 
   postApiEpisodes(episodes: Episode[]): Observable<Episode> {
@@ -146,7 +187,38 @@ export class MediaDataServiceService {
   }
 
   postApiPictures(pictures: Picture[]): Observable<Picture> {
-    return this.http.post<Picture>(`${this.apiUrl}/pictures`, pictures);
+    const normalizedPictures = pictures.map((picture) => ({
+      ...picture,
+      imagePath: this.getMediaFileName(picture.imagePath)
+    }));
+
+    return this.http.post<Picture>(`${this.apiUrl}/pictures`, normalizedPictures);
+  }
+
+  private normalizeMediaPath(path: string, folder: 'images' | 'videos'): string {
+    const normalized = (path ?? '').replace(/\\/g, '/').trim();
+    const marker = `personal/${folder}/`;
+    const markerIndex = normalized.lastIndexOf(marker);
+
+    if (markerIndex >= 0) {
+      const fileName = normalized.slice(markerIndex + marker.length)
+        .replace(/^\/+/, '')
+        .split('/')
+        .pop() ?? '';
+
+      return fileName ? `/${marker}${fileName}` : `/${marker.slice(0, -1)}`;
+    }
+
+    const fileName = normalized.replace(/^\/+/, '').split('/').pop() ?? '';
+    return fileName ? `/${marker}${fileName}` : '';
+  }
+
+  private getMediaFileName(path: string): string {
+    return (path ?? '')
+      .replace(/\\/g, '/')
+      .trim()
+      .split('/')
+      .pop() ?? '';
   }
 
   getFakeApiHeader(): Observable<Header> {
