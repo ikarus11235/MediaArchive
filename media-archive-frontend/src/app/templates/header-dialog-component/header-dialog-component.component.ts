@@ -26,9 +26,12 @@ export class HeaderDialogComponentComponent {
       return;
     }
 
+    const fileName = this.selectedFile.name;
+    const publicPath = `/personal/images/${fileName}`;
+
     this.save.emit({
       title: this.title,
-      thumbNailPath: `${this.selectedFile.name}`
+      thumbNailPath: publicPath
     });
 
   }

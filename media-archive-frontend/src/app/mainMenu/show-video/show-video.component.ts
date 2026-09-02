@@ -25,14 +25,29 @@ export class ShowVideoComponent implements OnInit {
     })
   }
 
+  normalizePublicPath(path: string): string {
+    if (!path) {
+      return '';
+    }
+
+    const normalized = path.replace(/\\/g, '/').trim();
+    return normalized.startsWith('/') ? normalized : `/${normalized}`;
+  }
+
   ngOnInit(): void {
     let initId = parseInt(this.episodeId())
     this.mediaService.getApiEpisodeById(initId).subscribe(episode => {
-      this.displayedEpisode = episode;
+      this.displayedEpisode = {
+        ...episode,
+        videoPath: this.normalizePublicPath(episode.videoPath)
+      };
     });
 
     this.mediaService.getApiPicturesByEpisodesId(initId).subscribe(pictures => {
-      this.dispayedPictures = pictures;
+      this.dispayedPictures = (pictures ?? []).map((picture) => ({
+        ...picture,
+        imagePath: this.normalizePublicPath(picture.imagePath)
+      }));
     });
 
   }
@@ -65,9 +80,10 @@ saveImages(files: File[]): void {
   let pictureArray: Picture[] = [];
   
   files.forEach(element => {
+    const fileName = element.name;
     pictureArray.push({
       id: 0,
-      imagePath: element.name,
+      imagePath: `/personal/images/${fileName}`,
       episode: this.displayedEpisode.id
     });
   });

@@ -26,10 +26,22 @@ export class ShowGalleryComponent {
     let initId = parseInt(this.episodeId());
 
     this.mediaService.getApiPicturesByEpisodesId(initId).subscribe(pictures => {
-      this.displayedPictures = pictures ?? [];
+      this.displayedPictures = (pictures ?? []).map((picture) => ({
+        ...picture,
+        imagePath: this.normalizeImagePath(picture.imagePath)
+      }));
       this.pictureIndex = this.displayedPictures.length ? 0 : 0;
     });
 
+  }
+
+  normalizeImagePath(path: string): string {
+    if (!path) {
+      return '';
+    }
+
+    const normalized = path.replace(/\\/g, '/').trim();
+    return normalized.startsWith('/') ? normalized : `/${normalized}`;
   }
 
   navigateToEpisode(){

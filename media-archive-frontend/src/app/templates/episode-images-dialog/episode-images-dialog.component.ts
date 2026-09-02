@@ -26,6 +26,7 @@ export class EpisodeImagesDialogComponent {
   }
 
   onSave(): void {
-    this.save.emit(this.selectedFiles);
+    const normalizedFiles = this.selectedFiles.map((file) => new File([file], `/personal/images/${file.name}`, { type: file.type }));
+    this.save.emit(normalizedFiles);
   }
 }
