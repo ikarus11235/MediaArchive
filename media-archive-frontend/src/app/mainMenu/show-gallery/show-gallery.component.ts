@@ -9,7 +9,7 @@ import { MediaDataServiceService } from '../../services/media-data-service.servi
   styleUrl: './show-gallery.component.scss',
 })
 export class ShowGalleryComponent {
-  displayedPictures: Headers[] | any;
+  displayedPictures: any[] = [];
   pictureIndex: number = 0;
 
   episodeId = signal('');
@@ -26,7 +26,8 @@ export class ShowGalleryComponent {
     let initId = parseInt(this.episodeId());
 
     this.mediaService.getApiPicturesByEpisodesId(initId).subscribe(pictures => {
-      this.displayedPictures = pictures;
+      this.displayedPictures = pictures ?? [];
+      this.pictureIndex = this.displayedPictures.length ? 0 : 0;
     });
 
   }
@@ -37,21 +38,27 @@ export class ShowGalleryComponent {
   }
 
   incrementPictureIndex(): void {
-    if (this.pictureIndex == this.displayedPictures.length - 1) {
+    if (!this.displayedPictures.length) {
+      return;
+    }
+
+    if (this.pictureIndex >= this.displayedPictures.length - 1) {
       this.pictureIndex = 0;
     } else {
       this.pictureIndex = this.pictureIndex + 1;
     }
-    //console.log(this.pictureIndex);
   }
 
   decrementPictureIndex(): void {
-    if (this.pictureIndex == 0) {
+    if (!this.displayedPictures.length) {
+      return;
+    }
+
+    if (this.pictureIndex <= 0) {
       this.pictureIndex = this.displayedPictures.length - 1;
     } else {
       this.pictureIndex = this.pictureIndex - 1;
     }
-    //console.log(this.pictureIndex);
   }
 
 }
