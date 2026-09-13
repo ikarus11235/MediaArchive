@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, afterEach } from 'vitest';
 
 import { Header } from '../interface/header';
+import { Season } from '../interface/season';
 import { MediaDataServiceService } from './media-data-service.service';
 
 describe('MediaDataServiceService', () => {
@@ -53,6 +54,45 @@ describe('MediaDataServiceService', () => {
     expect(result).toEqual(mockHeaders);
   });
 
+  it('returns an empty list when the season endpoint returns 404', () => {
+    let result: Season[] | undefined;
+    service.getApiSeason(42).subscribe((seasons) => {
+      result = seasons;
+    });
+
+    const req = httpMock.expectOne('http://localhost:5203/api/seasons/42');
+    expect(req.request.method).toBe('GET');
+    req.flush('Not found', { status: 404, statusText: 'Not Found' });
+
+    expect(result).toEqual([]);
+  });
+
+  it('returns an empty list when the episode endpoint returns 404', () => {
+    let result: unknown[] | undefined;
+    service.getApiEpisodes(77).subscribe((episodes) => {
+      result = episodes;
+    });
+
+    const req = httpMock.expectOne('http://localhost:5203/api/episodes/77');
+    expect(req.request.method).toBe('GET');
+    req.flush('Not found', { status: 404, statusText: 'Not Found' });
+
+    expect(result).toEqual([]);
+  });
+
+  it('returns an empty list when the picture endpoint returns 404', () => {
+    let result: unknown[] | undefined;
+    service.getApiPicturesByEpisodesId(99).subscribe((pictures) => {
+      result = pictures;
+    });
+
+    const req = httpMock.expectOne('http://localhost:5203/api/pictures/99');
+    expect(req.request.method).toBe('GET');
+    req.flush('Not found', { status: 404, statusText: 'Not Found' });
+
+    expect(result).toEqual([]);
+  });
+
   it('posts a season to the API', () => {
     const season = {
       id: 1,
@@ -68,6 +108,19 @@ describe('MediaDataServiceService', () => {
 
     const req = httpMock.expectOne('http://localhost:5203/api/seasons');
     expect(req.request.method).toBe('POST');
+    req.flush({ ok: true });
+
+    expect(result).toEqual({ ok: true });
+  });
+
+  it('deletes a header from the API', () => {
+    let result: unknown;
+    service.deleteApiHeader(7).subscribe((response) => {
+      result = response;
+    });
+
+    const req = httpMock.expectOne('http://localhost:5203/api/headers/7');
+    expect(req.request.method).toBe('DELETE');
     req.flush({ ok: true });
 
     expect(result).toEqual({ ok: true });

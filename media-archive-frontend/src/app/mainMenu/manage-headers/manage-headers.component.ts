@@ -31,6 +31,18 @@ export class ManageHeadersComponent implements OnInit {
     this.router.navigate(['/headers']);
   }
 
+  deleteNode(node: TreeNode): void {
+    console.log(node);
+    this.mediaDataService.deleteApiNode(node.type, node.id).subscribe({
+      next: () => {
+        this.loadTree();
+      },
+      error: (error) => {
+        console.error(`Failed to delete ${node.type}`, error);
+      }
+    });
+  }
+
   childrenAccessor = (node: TreeNode) => node.children ?? [];
 
   hasChild = (_: number, node: TreeNode) => !!node.children && node.children.length > 0;

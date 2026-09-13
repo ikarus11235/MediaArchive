@@ -15,7 +15,7 @@
           <button matIconButton aria-label="Umbenennen" class="action-button rename-button" type="button" (click)="$event.stopPropagation()">
             <mat-icon>edit</mat-icon>
           </button>
-          <button matIconButton aria-label="Löschen" class="action-button delete-button" type="button" (click)="$event.stopPropagation()">
+          <button matIconButton aria-label="Löschen" class="action-button delete-button" type="button" (click)="deleteNode(node); $event.stopPropagation()">
             <mat-icon>delete</mat-icon>
           </button>
         </div>
@@ -35,7 +35,7 @@
           <button matIconButton aria-label="Umbenennen" class="action-button rename-button" type="button" (click)="$event.stopPropagation()">
             <mat-icon>edit</mat-icon>
           </button>
-          <button matIconButton aria-label="Löschen" class="action-button delete-button" type="button" (click)="$event.stopPropagation()">
+          <button matIconButton aria-label="Löschen" class="action-button delete-button" type="button" (click)="deleteNode(node); $event.stopPropagation()">
             <mat-icon>delete</mat-icon>
           </button>
         </div>

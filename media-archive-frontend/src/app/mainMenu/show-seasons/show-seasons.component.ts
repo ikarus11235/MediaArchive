@@ -26,16 +26,24 @@ export class ShowSeasonsComponent implements OnInit{
   constructor(private mediaService: MediaDataServiceService) {
     this.activatedRoute.params.subscribe((params) => {
       this.headerId.set(params['id']);
+      this.loadHeaderAndSeasons();
     })
   }
   
   ngOnInit(): void {
-    let searchedHeaderId = parseInt(this.headerId());
+    this.loadHeaderAndSeasons();
+  }
+
+  private loadHeaderAndSeasons(): void {
+    const searchedHeaderId = parseInt(this.headerId(), 10);
+
     this.mediaService.getApiSeason(searchedHeaderId).subscribe(seasons => {
       this.displayedSeasons = seasons;
       console.log(this.displayedSeasons);
       if (this.displayedSeasons.length != 0 && this.displayedSeasons[0].episodes != null) {
         this.displayedEpisodes = this.displayedSeasons[0].episodes;
+      } else {
+        this.displayedEpisodes = [];
       }
     });
 
@@ -43,7 +51,6 @@ export class ShowSeasonsComponent implements OnInit{
       headers.forEach(header => {
         if (header.id === searchedHeaderId) {
           this.displayedTitle = header.title;
-          
         }
       });
     });
@@ -96,16 +103,7 @@ createSeason(event: { title: string; episodes: File[] }) {
   this.mediaService.postApiSeason(newSeason).subscribe({
     next: (createdSeason) => {
       console.log('Header erstellt', createdSeason);
-
-      let searchedHeaderId = parseInt(this.headerId());
-      this.mediaService.getApiSeason(searchedHeaderId).subscribe(seasons => {
-        this.displayedSeasons = seasons;
-        console.log(this.displayedSeasons);
-        if (this.displayedSeasons.length != 0 && this.displayedSeasons[0].episodes != null) {
-          this.displayedEpisodes = this.displayedSeasons[0].episodes;
-        }
-      });
-
+      this.loadHeaderAndSeasons();
     },
     error: (err) => {
       console.error(err);

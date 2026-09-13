@@ -40,7 +40,12 @@ export class ShowVideoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let initId = parseInt(this.episodeId())
+    this.loadEpisodeAndPictures();
+  }
+
+  private loadEpisodeAndPictures(): void {
+    const initId = parseInt(this.episodeId(), 10);
+
     this.mediaService.getApiEpisodeById(initId).subscribe(episode => {
       this.displayedEpisode = {
         ...episode,
@@ -54,7 +59,6 @@ export class ShowVideoComponent implements OnInit {
         imagePath: this.normalizePublicPath(picture.imagePath)
       }));
     });
-
   }
 
   navigateToSeasons(id: number){
@@ -96,15 +100,15 @@ saveImages(files: File[]): void {
   console.log(pictureArray);
 
   this.mediaService.postApiPictures(pictureArray).subscribe({
-    next: (createdPicture) => {
-      console.log('Pictures created', createdPicture);
+    next: () => {
+      this.loadEpisodeAndPictures();
+      this.showImagesDialog = false;
     },
     error: (err) => {
       console.error(err);
+      this.showImagesDialog = false;
     }
-  })
-
-  this.showImagesDialog = false;
+  });
 }
 
 }

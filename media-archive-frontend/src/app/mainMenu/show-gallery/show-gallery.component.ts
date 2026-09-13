@@ -19,11 +19,16 @@ export class ShowGalleryComponent {
   constructor(private mediaService: MediaDataServiceService){
     this.activatedRoute.params.subscribe((params) => {
       this.episodeId.set(params['id']);
+      this.loadGallery();
     })
   }
 
   ngOnInit(): void {
-    let initId = parseInt(this.episodeId());
+    this.loadGallery();
+  }
+
+  private loadGallery(): void {
+    const initId = parseInt(this.episodeId(), 10);
 
     this.mediaService.getApiPicturesByEpisodesId(initId).subscribe(pictures => {
       this.displayedPictures = (pictures ?? []).map((picture) => ({
@@ -32,7 +37,6 @@ export class ShowGalleryComponent {
       }));
       this.pictureIndex = this.displayedPictures.length ? 0 : 0;
     });
-
   }
 
   normalizeImagePath(path: string): string {

@@ -87,7 +87,7 @@ namespace MediaController.Controllers
         }
 
         #endregion
-
+        
         #region Headers
         [Authorize]
         [HttpGet("headers")]
@@ -126,6 +126,47 @@ namespace MediaController.Controllers
             };
 
             dbContext.Add(header);
+            await dbContext.SaveChangesAsync();
+
+            return Ok(header);
+        }
+
+        [Authorize]
+        [HttpPut("headers/{id}")]
+        public async Task<ActionResult<HeaderDto>> UpdateHeader(int id, [FromBody] HeaderDto headerDto)
+        {
+            var dbContext = _dbContextFactory.CreateDbContext();
+            var header = dbContext.Set<Header>().AsNoTracking().Where(q => q.Id == id).FirstOrDefault();
+            if (header == null)
+            {
+                return NotFound();
+            }
+            header.Title = headerDto.Title;
+            //header.ThumbNailPath = $"{_imageFolderPath}/{headerDto.ThumbNailPath}";
+            dbContext.Update(header);
+            await dbContext.SaveChangesAsync();
+            return Ok(header);
+        }
+
+        [Authorize]
+        [HttpDelete("headers/{id}")]
+        public async Task<ActionResult<HeaderDto>> DeleteHeader(int id)
+        {
+            await using var dbContext = _dbContextFactory.CreateDbContext();
+            
+            // Lade Header mit allen verschachtelten Entitäten
+            var header = await dbContext.Set<Header>()
+                .Include(h => h.Seasons)
+                .ThenInclude(s => s.Episodes)
+                .ThenInclude(e => e.Pictures)
+                .FirstOrDefaultAsync(h => h.Id == id);
+            
+            if (header == null)
+            {
+                return NotFound();
+            }
+
+            dbContext.Remove(header);
             await dbContext.SaveChangesAsync();
 
             return Ok(header);
@@ -213,6 +254,42 @@ namespace MediaController.Controllers
             dbContext.Add(season);
             await dbContext.SaveChangesAsync();
             return Ok();
+        }
+
+        [Authorize]
+        [HttpPut("seasons/{id}")]
+        public async Task<ActionResult<SeasonDto>> UpdateSeason(int id, [FromBody] SeasonDto seasonDto)
+        {
+            await using var dbContext = _dbContextFactory.CreateDbContext();
+            var season = dbContext.Set<Season>().AsNoTracking().Where(q => q.Id == id).FirstOrDefault();
+            if (season == null)
+            {
+                return NotFound();
+            }
+            season.Title = seasonDto.Title;
+            //season.HeaderId = seasonDto.HeaderId;
+            dbContext.Update(season);
+            await dbContext.SaveChangesAsync();
+            return Ok(season);
+        }
+
+        [Authorize]
+        [HttpDelete("seasons/{id}")]
+        public async Task<ActionResult<SeasonDto>> DeleteSeason(int id)
+        {
+            await using var dbContext = _dbContextFactory.CreateDbContext();
+            var season = dbContext.Set<Season>()
+                .Include(s => s.Episodes)
+                .ThenInclude(e => e.Pictures)
+                .Where(q => q.Id == id)
+                .FirstOrDefault();
+            if (season == null)
+            {
+                return NotFound();
+            }
+            dbContext.Remove(season);
+            await dbContext.SaveChangesAsync();
+            return Ok(season);
         }
         #endregion
 
@@ -309,6 +386,43 @@ namespace MediaController.Controllers
             dbContext.SaveChanges();
             return Ok(season);
         }
+
+        [Authorize]
+        [HttpPut("episodes/{id}")]
+        public async Task<ActionResult<EpisodeDto>> UpdateEpisode(int id, [FromBody] EpisodeDto episodeDto)
+        {
+            await using var dbContext = _dbContextFactory.CreateDbContext();
+            var episode = dbContext.Set<Episode>().AsNoTracking().Where(q => q.Id == id).FirstOrDefault();
+            if (episode == null)
+            {
+                return NotFound();
+            }
+            episode.Title = episodeDto.Title;
+            //episode.Description = episodeDto.Description;
+            //episode.EpisodeSign = episodeDto.EpisodeSign;
+            //episode.VideoPath = episodeDto.VideoPath;
+            dbContext.Update(episode);
+            await dbContext.SaveChangesAsync();
+            return Ok(episode);
+        }
+
+        [Authorize]
+        [HttpDelete("episodes/{id}")]
+        public async Task<ActionResult<EpisodeDto>> DeleteEpisode(int id)
+        {
+            await using var dbContext = _dbContextFactory.CreateDbContext();
+            var episode = dbContext.Set<Episode>()
+                .Include(e => e.Pictures)
+                .Where(q => q.Id == id)
+                .FirstOrDefault();
+            if (episode == null)
+            {
+                return NotFound();
+            }
+            dbContext.Remove(episode);
+            await dbContext.SaveChangesAsync();
+            return Ok(episode);
+        }
         #endregion
 
         #region Pictures
@@ -361,33 +475,21 @@ namespace MediaController.Controllers
         }
 
         [Authorize]
-        [HttpGet("pictures")]
-        public ActionResult<IEnumerable<PictureDto>> GetPictures()
+        [HttpDelete("pictures/{id}")]
+        public async Task<ActionResult<PictureDto>> DeletePicture(int id)
         {
-            return Ok(new[]
+            await using var dbContext = _dbContextFactory.CreateDbContext();
+            var picture = dbContext.Set<Picture>().Where(q => q.Id == id).FirstOrDefault();
+            if (picture == null)
             {
-            new PictureDto
-            {
-                Id = 1,
-                Episode = 1,
-                ImagePath = "https://example.com/pilot.jpg"
+                return NotFound();
             }
-        });
+            dbContext.Remove(picture);
+            await dbContext.SaveChangesAsync();
+            return Ok(picture);
         }
 
-        [Authorize]
-        [HttpGet("tags")]
-        public ActionResult<IEnumerable<TagDto>> GetTags()
-        {
-            return Ok(new[]
-            {
-            new TagDto
-            {
-                Id = 1,
-                Name = "Action"
-            }
-        });
-        }
+
         #endregion
     }
 }

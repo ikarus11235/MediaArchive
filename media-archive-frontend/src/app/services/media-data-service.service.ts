@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Header } from '../interface/header';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Observable, catchError, map, of, throwError } from 'rxjs';
 import { Season } from '../interface/season';
 import { Episode } from '../interface/episode';
 import { Picture } from '../interface/picture';
@@ -124,6 +124,13 @@ export class MediaDataServiceService {
 
   getApiSeason(headerId: number): Observable<Season[]> {
     return this.http.get<Season[]>(`${this.apiUrl}/seasons/${headerId}`).pipe(
+      catchError((error) => {
+        if (error.status === 404) {
+          return of([]);
+        }
+
+        return throwError(() => error);
+      }),
       map((seasons) => seasons.map((season) => ({
         ...season,
         episodes: season.episodes?.map((episode) => ({
@@ -148,6 +155,13 @@ export class MediaDataServiceService {
 
   getApiEpisodes(seasonId: number): Observable<Episode[]> {
     return this.http.get<Episode[]>(`${this.apiUrl}/episodes/${seasonId}`).pipe(
+      catchError((error) => {
+        if (error.status === 404) {
+          return of([]);
+        }
+
+        return throwError(() => error);
+      }),
       map((episodes) => episodes.map((episode) => ({
         ...episode,
         videoPath: this.normalizeMediaPath(episode.videoPath, 'videos')
@@ -166,6 +180,13 @@ export class MediaDataServiceService {
 
   getApiPicturesByEpisodesId(episodeId: number): Observable<Picture[]> {
     return this.http.get<Picture[]>(`${this.apiUrl}/pictures/${episodeId}`).pipe(
+      catchError((error) => {
+        if (error.status === 404) {
+          return of([]);
+        }
+
+        return throwError(() => error);
+      }),
       map((pictures) => pictures.map((picture) => ({
         ...picture,
         imagePath: this.normalizeMediaPath(picture.imagePath, 'images')
@@ -180,6 +201,21 @@ export class MediaDataServiceService {
     };
 
     return this.http.post<Header>(`${this.apiUrl}/headers`, normalizedHeader);
+  }
+
+  deleteApiNode(type: 'header' | 'season' | 'episode' | 'picture', id: number): Observable<unknown> {
+    const resourceMap = {
+      header: 'headers',
+      season: 'seasons',
+      episode: 'episodes',
+      picture: 'pictures'
+    };
+
+    return this.http.delete<unknown>(`${this.apiUrl}/${resourceMap[type]}/${id}`);
+  }
+
+  deleteApiHeader(id: number): Observable<unknown> {
+    return this.deleteApiNode('header', id);
   }
 
   postApiEpisodes(episodes: Episode[]): Observable<Episode> {
