@@ -218,6 +218,21 @@ export class MediaDataServiceService {
     return this.deleteApiNode('header', id);
   }
 
+  renameApiHeader(header: Header): Observable<Header> {
+    return this.http.put<Header>(`${this.apiUrl}/headers/${header.id}`, header);
+  }
+
+  renameApiNode(type: 'header' | 'season' | 'episode' | 'picture', id: number, newName: string): Observable<unknown> {
+    const resourceMap = {
+      header: 'headers',
+      season: 'seasons',
+      episode: 'episodes',
+      picture: 'pictures'
+    };
+
+    return this.http.put<unknown>(`${this.apiUrl}/${resourceMap[type]}/${id}`, { title: newName });
+  }
+
   postApiEpisodes(episodes: Episode[]): Observable<Episode> {
     return this.http.post<Episode>(`${this.apiUrl}/episodes`, episodes);
   }

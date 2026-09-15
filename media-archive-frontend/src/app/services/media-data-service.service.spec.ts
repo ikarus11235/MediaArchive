@@ -125,4 +125,25 @@ describe('MediaDataServiceService', () => {
 
     expect(result).toEqual({ ok: true });
   });
+
+  it('renames a header with the complete header DTO', () => {
+    const header = {
+      id: 7,
+      title: 'Renamed Header',
+      thumbNailPath: '/personal/images/header.jpg',
+      logo: 'Header Logo'
+    };
+    let result: unknown;
+
+    service.renameApiHeader(header).subscribe((response) => {
+      result = response;
+    });
+
+    const req = httpMock.expectOne('http://localhost:5203/api/headers/7');
+    expect(req.request.method).toBe('PUT');
+    expect(req.request.body).toEqual(header);
+    req.flush(header);
+
+    expect(result).toEqual(header);
+  });
 });

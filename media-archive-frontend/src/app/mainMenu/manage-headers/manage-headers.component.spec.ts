@@ -37,4 +37,19 @@ describe('ManageHeadersComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should open and close the rename form per node', () => {
+    const nodeA = { id: 1, name: 'Header 1', type: 'header' as const };
+    const nodeB = { id: 2, name: 'Header 2', type: 'header' as const };
+
+    component.switchRenameForm(nodeA);
+    expect(component.renameFormOpenNode).toBe(nodeA);
+    expect(component.newName).toBe('Header 1');
+
+    component.switchRenameForm(nodeB);
+    expect(component.renameFormOpenNode).toBe(nodeB);
+
+    component.switchRenameForm(nodeB);
+    expect(component.renameFormOpenNode).toBeNull();
+  });
 });

@@ -12,7 +12,11 @@
         <span class="tree-label">{{ node.name }}</span>
 
         <div class="tree-actions">
-          <button matIconButton aria-label="Umbenennen" class="action-button rename-button" type="button" (click)="$event.stopPropagation()">
+          <form *ngIf="renameFormOpenNode === node" class="rename-form" (click)="$event.stopPropagation()" (keydown.space)="$event.stopPropagation()">
+            <input type="text" class="rename-input" placeholder="New name" [(ngModel)]="newName" name="name-{{ node.id }}" />
+            <input class="button rename-save-button" type="button" value="Save" (click)="renameNode(node, newName); $event.stopPropagation()" />
+          </form>
+          <button matIconButton aria-label="Umbenennen" class="action-button rename-button" type="button" (click)="switchRenameForm(node); $event.stopPropagation()">
             <mat-icon>edit</mat-icon>
           </button>
           <button matIconButton aria-label="Löschen" class="action-button delete-button" type="button" (click)="deleteNode(node); $event.stopPropagation()">
@@ -32,7 +36,11 @@
         <span class="tree-label">{{ node.name }}</span>
 
         <div class="tree-actions">
-          <button matIconButton aria-label="Umbenennen" class="action-button rename-button" type="button" (click)="$event.stopPropagation()">
+          <form *ngIf="renameFormOpenNode === node" class="rename-form" (click)="$event.stopPropagation()" (keydown.space)="$event.stopPropagation()">
+            <input type="text" class="rename-input" placeholder="New name" [(ngModel)]="newName" name="name-{{ node.id }}" />
+            <input class="button rename-save-button" type="button" value="Save" (click)="renameNode(node, newName); $event.stopPropagation()" />
+          </form>
+          <button matIconButton aria-label="Umbenennen" class="action-button rename-button" type="button" (click)="switchRenameForm(node); $event.stopPropagation()">
             <mat-icon>edit</mat-icon>
           </button>
           <button matIconButton aria-label="Löschen" class="action-button delete-button" type="button" (click)="deleteNode(node); $event.stopPropagation()">

@@ -68,6 +68,25 @@ mat-tree {
   margin-left: auto;
 }
 
+.rename-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rename-input {
+  min-width: 140px;
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+}
+
+.rename-save-button {
+  margin: 0;
+}
+
 .mat-tree-node button[matIconButton] {
   background: var(--accent);
   color: var(--text);

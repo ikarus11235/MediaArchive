@@ -8,6 +8,8 @@ interface TreeNode {
   id: number;
   name: string;
   type: 'header' | 'season' | 'episode' | 'picture';
+  thumbNailPath?: string;
+  logo?: string;
   children?: TreeNode[];
 }
 
@@ -18,6 +20,9 @@ interface TreeNode {
   styleUrl: './manage-headers.component.scss'
 })
 export class ManageHeadersComponent implements OnInit {
+  renameFormOpenNode: TreeNode | null = null;
+  newName: string = '';
+
   private readonly mediaDataService = inject(MediaDataServiceService);
   router = inject(Router);
 
@@ -27,12 +32,23 @@ export class ManageHeadersComponent implements OnInit {
     this.loadTree();
   }
 
+  switchRenameForm(node: TreeNode): void {
+    if (this.renameFormOpenNode === node) {
+      this.renameFormOpenNode = null;
+      this.newName = '';
+      return;
+    }
+
+    this.renameFormOpenNode = node;
+    this.newName = node.name;
+  }
+
   backToHeaders(): void {
     this.router.navigate(['/headers']);
   }
 
   deleteNode(node: TreeNode): void {
-    console.log(node);
+    //console.log(node);
     this.mediaDataService.deleteApiNode(node.type, node.id).subscribe({
       next: () => {
         this.loadTree();
@@ -41,6 +57,29 @@ export class ManageHeadersComponent implements OnInit {
         console.error(`Failed to delete ${node.type}`, error);
       }
     });
+  }
+
+  renameNode(node: TreeNode, newName: string): void {
+    console.log(node, newName);
+    const renameRequest = node.type === 'header'
+      ? this.mediaDataService.renameApiHeader({
+        id: node.id,
+        title: newName,
+        thumbNailPath: node.thumbNailPath ?? '',
+        logo: node.logo ?? ''
+      })
+      : this.mediaDataService.renameApiNode(node.type, node.id, newName);
+
+    renameRequest.subscribe({
+      next: () => {
+        this.loadTree();
+      },
+      error: (error) => {
+        console.error(`Failed to rename ${node.type}`, error);
+      }
+    });
+    this.renameFormOpenNode = null;
+    this.newName = '';
   }
 
   childrenAccessor = (node: TreeNode) => node.children ?? [];
@@ -63,6 +102,8 @@ export class ManageHeadersComponent implements OnInit {
                     id: header.id,
                     name: header.title,
                     type: 'header' as const,
+                    thumbNailPath: header.thumbNailPath,
+                    logo: header.logo,
                     children: []
                   });
                 }
@@ -111,6 +152,8 @@ export class ManageHeadersComponent implements OnInit {
                     id: header.id,
                     name: header.title,
                     type: 'header' as const,
+                    thumbNailPath: header.thumbNailPath,
+                    logo: header.logo,
                     children: seasonNodes
                   }))
                 );
