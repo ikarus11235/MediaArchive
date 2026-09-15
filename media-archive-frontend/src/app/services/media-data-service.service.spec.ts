@@ -51,7 +51,10 @@ describe('MediaDataServiceService', () => {
     expect(req.request.method).toBe('GET');
     req.flush(mockHeaders);
 
-    expect(result).toEqual(mockHeaders);
+    expect(result).toEqual([{
+      ...mockHeaders[0],
+      thumbNailPath: '/personal/images/a.jpg'
+    }]);
   });
 
   it('returns an empty list when the season endpoint returns 404', () => {
