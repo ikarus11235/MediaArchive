@@ -36,6 +36,7 @@ export class ShowGalleryComponent {
         imagePath: this.normalizeImagePath(picture.imagePath)
       }));
       this.pictureIndex = this.displayedPictures.length ? 0 : 0;
+      console.log(`Displayed Pictures: ${JSON.stringify(this.displayedPictures)} for Episode ID: ${initId}`);
     });
   }
 
@@ -79,6 +80,12 @@ export class ShowGalleryComponent {
       this.pictureIndex = this.displayedPictures.length - 1;
     } else {
       this.pictureIndex = this.pictureIndex - 1;
+    }
+  }
+
+  showPicture(index: number): void {
+    if (index >= 0 && index < this.displayedPictures.length) {
+      this.pictureIndex = index;
     }
   }
 

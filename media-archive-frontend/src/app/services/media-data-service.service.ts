@@ -247,12 +247,16 @@ export class MediaDataServiceService {
   }
 
   private normalizeMediaPath(path: string, folder: 'images' | 'videos'): string {
+    console.log(`Normalizing media path: ${path} for folder: ${folder}`);
     const normalized = (path ?? '').replace(/\\/g, '/').trim();
-    const marker = `personal/${folder}/`;
-    const markerIndex = normalized.lastIndexOf(marker);
+    const mediaRootPattern = new RegExp(`(?:^|/)(default|personal)/${folder}/`, 'i');
+    const mediaRootMatch = normalized.match(mediaRootPattern);
 
-    if (markerIndex >= 0) {
-      const fileName = normalized.slice(markerIndex + marker.length)
+    if (mediaRootMatch?.index !== undefined) {
+      const mediaRoot = mediaRootMatch[1].toLowerCase();
+      const mediaRootStart = mediaRootMatch.index + (mediaRootMatch[0].startsWith('/') ? 1 : 0);
+      const marker = `${mediaRoot}/${folder}/`;
+      const fileName = normalized.slice(mediaRootStart + marker.length)
         .replace(/^\/+/, '')
         .split('/')
         .pop() ?? '';
@@ -261,7 +265,7 @@ export class MediaDataServiceService {
     }
 
     const fileName = normalized.replace(/^\/+/, '').split('/').pop() ?? '';
-    return fileName ? `/${marker}${fileName}` : '';
+    return fileName ? `/personal/${folder}/${fileName}` : '';
   }
 
   private getMediaFileName(path: string): string {

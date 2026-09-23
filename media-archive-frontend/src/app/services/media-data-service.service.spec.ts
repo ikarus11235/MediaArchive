@@ -57,6 +57,26 @@ describe('MediaDataServiceService', () => {
     }]);
   });
 
+  it('preserves the default media folder for pictures', () => {
+    let result: unknown;
+    service.getApiPicturesByEpisodesId(1).subscribe((pictures) => {
+      result = pictures;
+    });
+
+    const req = httpMock.expectOne('http://localhost:5203/api/pictures/1');
+    req.flush([{
+      id: 1,
+      episode: 1,
+      imagePath: 'default/images/open-page.jpg'
+    }]);
+
+    expect(result).toEqual([{
+      id: 1,
+      episode: 1,
+      imagePath: '/default/images/open-page.jpg'
+    }]);
+  });
+
   it('returns an empty list when the season endpoint returns 404', () => {
     let result: Season[] | undefined;
     service.getApiSeason(42).subscribe((seasons) => {

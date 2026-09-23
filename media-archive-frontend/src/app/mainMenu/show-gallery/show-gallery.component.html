@@ -10,7 +10,7 @@
 
 <!-- <h2 *ngIf="displayedPictures">Pictures:</h2> -->
 <div class="pictures" *ngIf="displayedPictures && displayedPictures.length > 0">
-  <div *ngFor="let picture of displayedPictures">
-    <img [src]="normalizeImagePath(picture.imagePath)" alt="Alt">
+  <div *ngFor="let picture of displayedPictures; let index = index">
+    <img [src]="normalizeImagePath(picture.imagePath)" alt="Alt" (click)="showPicture(index)">
   </div>
 </div>
