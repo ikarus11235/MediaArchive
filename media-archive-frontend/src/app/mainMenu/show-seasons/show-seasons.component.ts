@@ -41,9 +41,14 @@ export class ShowSeasonsComponent implements OnInit{
     this.mediaService.getApiSeason(searchedHeaderId).subscribe(seasons => {
       this.displayedSeasons = seasons;
       console.log(this.displayedSeasons);
-      if (this.displayedSeasons.length != 0 && this.displayedSeasons[0].episodes != null) {
-        this.displayedEpisodes = this.displayedSeasons[0].episodes;
+      const requestedSeasonId = Number(this.route.snapshot.queryParamMap.get('seasonId'));
+      const selectedSeason = this.displayedSeasons.find(season => season.id === requestedSeasonId)
+        ?? this.displayedSeasons[0];
+
+      if (selectedSeason) {
+        this.renderEpisodes(selectedSeason.id);
       } else {
+        this.selectedSeasonId = 1;
         this.displayedEpisodes = [];
       }
     });

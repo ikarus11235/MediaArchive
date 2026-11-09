@@ -63,7 +63,9 @@ export class ShowVideoComponent implements OnInit {
 
   navigateToSeasons(id: number){
     this.mediaService.getApiHeaderBySeasonId(id).subscribe(header => {
-      this.router.navigate(['/season', header.id]);
+      this.router.navigate(['/season', header.id], {
+        queryParams: { seasonId: id }
+      });
       console.log('Back to header ', header);
     });
 

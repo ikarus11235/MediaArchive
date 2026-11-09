@@ -10,24 +10,36 @@ import { ShowSeasonsComponent } from './show-seasons.component';
 describe('ShowSeasonsComponent', () => {
   let component: ShowSeasonsComponent;
   let fixture: ComponentFixture<ShowSeasonsComponent>;
+  let requestedSeasonId: string | null = null;
+  let getApiEpisodes: ReturnType<typeof vi.fn>;
 
   beforeEach(async () => {
+    requestedSeasonId = null;
+    getApiEpisodes = vi.fn(() => of([]));
     await TestBed.configureTestingModule({
       declarations: [ShowSeasonsComponent],
       providers: [
         {
           provide: ActivatedRoute,
           useValue: {
-            params: of({ id: '1' })
+            params: of({ id: '1' }),
+            snapshot: {
+              queryParamMap: {
+                get: () => requestedSeasonId
+              }
+            }
           }
         },
         { provide: Router, useValue: { navigate: vi.fn() } },
         {
           provide: MediaDataServiceService,
           useValue: {
-            getApiSeason: () => of([]),
+            getApiSeason: () => of([
+              { id: 1, title: 'Season 1', headerId: 1, episodes: [] },
+              { id: 2, title: 'Season 2', headerId: 1, episodes: [] }
+            ]),
             getApiHeader: () => of([]),
-            getApiEpisodes: () => of([]),
+            getApiEpisodes,
             postApiSeason: vi.fn(() => of({}))
           }
         }
@@ -68,5 +80,14 @@ describe('ShowSeasonsComponent', () => {
         videoPath: 'ComputerSmash.mp4'
       })]
     }));
+  });
+
+  it('should load the requested season from the route query parameter', () => {
+    requestedSeasonId = '2';
+
+    component.ngOnInit();
+
+    expect(getApiEpisodes).toHaveBeenCalledWith(2);
+    expect(component.selectedSeasonId).toBe(2);
   });
 });

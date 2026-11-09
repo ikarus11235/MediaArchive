@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
-import { describe, beforeEach, it, expect } from 'vitest';
+import { describe, beforeEach, it, expect, vi } from 'vitest';
 
 import { MediaDataServiceService } from '../../services/media-data-service.service';
 import { ShowVideoComponent } from './show-video.component';
@@ -10,6 +10,7 @@ import { ShowVideoComponent } from './show-video.component';
 describe('ShowVideoComponent', () => {
   let component: ShowVideoComponent;
   let fixture: ComponentFixture<ShowVideoComponent>;
+  let router: { navigate: ReturnType<typeof vi.fn> };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -21,7 +22,7 @@ describe('ShowVideoComponent', () => {
             params: of({ id: '1' })
           }
         },
-        { provide: Router, useValue: { navigate: vi.fn() } },
+        { provide: Router, useValue: router = { navigate: vi.fn() } },
         {
           provide: MediaDataServiceService,
           useValue: {
@@ -42,5 +43,13 @@ describe('ShowVideoComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should navigate back to the episode season', () => {
+    component.navigateToSeasons(7);
+
+    expect(router.navigate).toHaveBeenCalledWith(['/season', 1], {
+      queryParams: { seasonId: 7 }
+    });
   });
 });
