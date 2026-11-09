@@ -4,11 +4,29 @@
   <button class="button" (click)="backToHeaders()">
     Zurück
   </button>
+  <button
+    class="button delete-selected-button"
+    type="button"
+    [disabled]="selectedNodeKeys.size === 0"
+    (click)="deleteSelectedNodes()">
+    Auswahl löschen ({{ selectedNodeKeys.size }})
+  </button>
 
-  <mat-tree #tree [dataSource]="dataSource" [childrenAccessor]="childrenAccessor">
+  <mat-tree
+    #tree
+    [dataSource]="dataSource"
+    [childrenAccessor]="childrenAccessor"
+    [expansionKey]="expansionKey">
     <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
       <div class="tree-row">
         <button matIconButton disabled></button>
+        <input
+          class="node-checkbox"
+          type="checkbox"
+          [checked]="isNodeSelected(node)"
+          [attr.aria-label]="'Auswählen: ' + node.name"
+          (click)="$event.stopPropagation()"
+          (change)="toggleNodeSelection(node)" />
         <span class="tree-label">{{ node.name }}</span>
 
         <div class="tree-actions">
@@ -33,6 +51,13 @@
             {{ tree.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
           </mat-icon>
         </button>
+        <input
+          class="node-checkbox"
+          type="checkbox"
+          [checked]="isNodeSelected(node)"
+          [attr.aria-label]="'Auswählen: ' + node.name"
+          (click)="$event.stopPropagation()"
+          (change)="toggleNodeSelection(node)" />
         <span class="tree-label">{{ node.name }}</span>
 
         <div class="tree-actions">

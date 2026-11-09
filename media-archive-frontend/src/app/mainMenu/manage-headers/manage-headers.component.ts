@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MediaDataServiceService } from '../../services/media-data-service.service';
 import { forkJoin, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 
 interface TreeNode {
   id: number;
@@ -27,6 +27,7 @@ export class ManageHeadersComponent implements OnInit {
   router = inject(Router);
 
   dataSource: TreeNode[] = [];
+  selectedNodeKeys = new Set<string>();
 
   ngOnInit(): void {
     this.loadTree();
@@ -59,6 +60,66 @@ export class ManageHeadersComponent implements OnInit {
     });
   }
 
+  isNodeSelected(node: TreeNode): boolean {
+    return this.selectedNodeKeys.has(this.nodeKey(node));
+  }
+
+  toggleNodeSelection(node: TreeNode): void {
+    const key = this.nodeKey(node);
+    if (this.selectedNodeKeys.has(key)) {
+      this.selectedNodeKeys.delete(key);
+    } else {
+      this.selectedNodeKeys.add(key);
+    }
+  }
+
+  deleteSelectedNodes(): void {
+    const nodesToDelete = this.getSelectedNodesWithoutSelectedAncestors();
+    if (nodesToDelete.length === 0) {
+      return;
+    }
+
+    forkJoin(nodesToDelete.map(node =>
+      this.mediaDataService.deleteApiNode(node.type, node.id).pipe(
+        map(() => ({ node, success: true })),
+        catchError(error => {
+          console.error(`Failed to delete ${node.type}`, error);
+          return of({ node, success: false });
+        })
+      )
+    )).subscribe(results => {
+      results
+        .filter(result => result.success)
+        .forEach(result => this.clearSelectionForSubtree(result.node));
+      this.loadTree();
+    });
+  }
+
+  private clearSelectionForSubtree(node: TreeNode): void {
+    this.selectedNodeKeys.delete(this.nodeKey(node));
+    node.children?.forEach(child => this.clearSelectionForSubtree(child));
+  }
+
+  private getSelectedNodesWithoutSelectedAncestors(): TreeNode[] {
+    const selectedNodes: TreeNode[] = [];
+    const visit = (nodes: TreeNode[], selectedAncestor = false): void => {
+      nodes.forEach(node => {
+        const selected = this.isNodeSelected(node);
+        if (selected && !selectedAncestor) {
+          selectedNodes.push(node);
+        }
+        visit(node.children ?? [], selectedAncestor || selected);
+      });
+    };
+
+    visit(this.dataSource);
+    return selectedNodes;
+  }
+
+  private nodeKey(node: TreeNode): string {
+    return `${node.type}:${node.id}`;
+  }
+
   renameNode(node: TreeNode, newName: string): void {
     console.log(node, newName);
     const renameRequest = node.type === 'header'
@@ -85,6 +146,8 @@ export class ManageHeadersComponent implements OnInit {
   childrenAccessor = (node: TreeNode) => node.children ?? [];
 
   hasChild = (_: number, node: TreeNode) => !!node.children && node.children.length > 0;
+
+  expansionKey = (node: TreeNode) => this.nodeKey(node);
 
   private loadTree(): void {
     this.mediaDataService.getApiHeader().pipe(
