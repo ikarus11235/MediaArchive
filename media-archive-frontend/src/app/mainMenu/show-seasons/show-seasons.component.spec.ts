@@ -44,4 +44,12 @@ describe('ShowSeasonsComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should close the season dropdown after selecting a season', () => {
+    component.isSeasonDropdownOpen = true;
+
+    component.renderEpisodes(2);
+
+    expect(component.isSeasonDropdownOpen).toBe(false);
+  });
 });

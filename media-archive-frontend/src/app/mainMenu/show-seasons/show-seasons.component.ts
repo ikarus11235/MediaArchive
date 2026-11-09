@@ -16,6 +16,7 @@ export class ShowSeasonsComponent implements OnInit{
   displayedSeasons: Season[] = [];
   selectedSeasonId: number = 1;
   displayedEpisodes: Episode[] = [];
+  isSeasonDropdownOpen = false;
   private activatedRoute = inject(ActivatedRoute);
 
   private route = inject(ActivatedRoute); 
@@ -57,6 +58,7 @@ export class ShowSeasonsComponent implements OnInit{
   }
 
   renderEpisodes(seasonId: number): void{
+    this.isSeasonDropdownOpen = false;
     this.selectedSeasonId = seasonId;
     this.mediaService.getApiEpisodes(seasonId).subscribe(episodes => {
       this.displayedEpisodes = episodes;
