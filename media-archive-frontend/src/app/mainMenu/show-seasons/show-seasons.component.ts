@@ -84,12 +84,16 @@ createSeason(event: { title: string; episodes: File[] }) {
   let episodeArray: Episode[] = [];
   event.episodes.forEach(element => {
     const fileName = element.name;
+    const extensionIndex = fileName.lastIndexOf('.');
+    const episodeTitle = extensionIndex > 0
+      ? fileName.slice(0, extensionIndex)
+      : fileName;
     episodeArray.push({
       id: 0,
       description: '',
       episodeSign: '',
       seasonId: this.selectedSeasonId,
-      title: element.name,
+      title: episodeTitle,
       videoPath: fileName
     });
   });
